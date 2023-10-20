@@ -772,10 +772,24 @@
     </footer>
   </div>
 </template>
-<script>
-export default {
-  
-}
+<script setup>
+import { ref } from 'vue';
+
+
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+
+// Import Swiper styles
+import 'swiper/css';
+
+
+import 'swiper/css/pagination';
+// import required modules
+import { Pagination,Autoplay } from 'swiper/modules'
+
+
+const modules = ref([Pagination,Autoplay]);
 </script>
 <style lang="">
   
