@@ -2,11 +2,19 @@
 <script setup>
 
 import {reactive, ref} from 'vue';
+// state handeling 
 import { storeToRefs } from 'pinia';
 import {useAuth} from '@/stores/auth';
+// validation error 
 import { Form, Field } from 'vee-validate';
 import * as yup from 'yup';
+// router pushing 
+import { useRouter } from 'vue-router'
+// notification massage
+import { ElNotification } from 'element-plus'
 
+
+const router = useRouter()
 
 const schema = yup.object({
   phone: yup.string().required('Phone Feild Is Required'),
@@ -24,7 +32,13 @@ const onSubmit = async (values, {setErrors}) => {
   console.log(res);
 
     if (res.data) {
-        alert("Login Success");
+      router.push({ name: 'index.page' })
+      ElNotification({
+        title: 'Success',
+        message: 'This is a success message',
+        type: 'success',
+        position: 'top-left',
+      })
     }else{
       setErrors(res);
     }

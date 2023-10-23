@@ -3,6 +3,7 @@ import {Index, Shop, SingleProduct, Checkout} from '@/views/pages';
 import {UserLogin, UserRegister} from '@/views/auth';
 import {SellerApply, SellerList, SellerStore} from '@/views/pages/seller';
 import {MyOrderList, MyProfile, MyWishList} from '@/views/user';
+import {useAuth} from '@/stores';
 
 const routes = [
 
@@ -17,11 +18,11 @@ const routes = [
 
     // User Route 
 
-    { path: '/auth/login', name: 'user.login', meta: { title: 'Login' }, component: UserLogin },
-    { path: '/auth/register', name: 'user.register', meta: { title: 'Register' }, component: UserRegister },
-    { path: '/my/profile', name: 'user.profile', meta: { title: 'Profile' }, component: MyProfile },
-    { path: '/my/Order', name: 'user.order', meta: { title: 'Order' }, component: MyOrderList },
-    { path: '/my/wishlist', name: 'user.wishlist', meta: { title: 'Wishlist' }, component: MyWishList },
+    { path: '/auth/login', name: 'user.login', meta: { title: 'Login', guest : true }, component: UserLogin },
+    { path: '/auth/register', name: 'user.register', meta: { title: 'Register', guest : true }, component: UserRegister },
+    { path: '/my/profile', name: 'user.profile', meta: { title: 'Profile', requiresAuth: true }, component: MyProfile },
+    { path: '/my/Order', name: 'user.order', meta: { title: 'Order', requiresAuth: true }, component: MyOrderList },
+    { path: '/my/wishlist', name: 'user.wishlist', meta: { title: 'Wishlist', requiresAuth: true }, component: MyWishList },
 
   ]
 
@@ -34,7 +35,24 @@ const DEFAULT_TITLE = "404"
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || DEFAULT_TITLE ;
-  next()
+
+  const loggedIn = useAuth();
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!loggedIn.user.meta) {
+      next({name : 'user.login'})
+    }else{
+      next();
+    }
+  }else if(to.matched.some((record) => record.meta.guest)){
+    if (loggedIn.user.meta) {
+      next({name : 'user.profile'})
+    }else{
+      next();
+    }
+  }else{
+    next()
+  }
 })
 
 export default router
