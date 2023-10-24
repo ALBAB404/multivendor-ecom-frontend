@@ -13,10 +13,31 @@ export const useAuth = defineStore('auth', {
   actions: {
     async login(formData) {
       try {
-        const res = await axiosInstance.post("/admin/login", formData);
+        const res = await axiosInstance.post("/user/login", formData);
 
         if (res.status === 200) {
           // console.log(res.data);
+          this.user = res.data;
+          return new Promise((resolve) => {
+            resolve(res.data);
+          });
+        }
+      } catch (error) {
+        if (error.response.data) {
+          // this.errors = error.response.data.errors;
+
+          return new Promise((reject) => {
+            reject(error.response.data.errors);
+          });
+        }
+      }
+    },
+
+
+    async register(formData) {
+      try {
+        const res = await axiosInstance.post("/user/register", formData);
+        if (res.status === 201) {
           this.user = res.data;
           return new Promise((resolve) => {
             resolve(res.data);

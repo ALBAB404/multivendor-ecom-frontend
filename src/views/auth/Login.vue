@@ -1,9 +1,8 @@
 
 <script setup>
 
-import {reactive, ref} from 'vue';
-// state handeling 
-import { storeToRefs } from 'pinia';
+import {ref} from 'vue';
+
 import {useAuth} from '@/stores/auth';
 // validation error 
 import { Form, Field } from 'vee-validate';
@@ -23,7 +22,6 @@ const schema = yup.object({
 
 const auth = useAuth()
 const showPassword = ref(false)
-const {errors} = storeToRefs(auth)
 
 
 const onSubmit = async (values, { setErrors }) => {
