@@ -1,3 +1,51 @@
+
+<script setup>
+import {useAuth} from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+// router pushing 
+import { useRouter } from 'vue-router'
+
+// notification massage
+import { ElNotification } from 'element-plus'
+
+
+const auth = useAuth()
+const { user, loading} = storeToRefs(auth)
+const router = useRouter()
+
+const userLogout = async () => {
+  const res = await auth.logout()
+  console.log(res);
+  if(res.status){
+    router.push({ name: "index.page"})
+    ElNotification({
+        title: 'Success',
+        message: 'logout successfully',
+        type: 'success',
+        position: 'top-left',
+      })
+  }
+}
+
+function search(){
+  $(".header-form").toggleClass("active"),
+  $('.header-src').children(".fa-search").toggleClass("fa-times");
+}
+
+
+function menu(){
+  $("body").css("overflow", "hidden"),
+  $(".nav-sidebar").addClass("active")
+}
+function cartShow(){
+  $("body").css("overflow", "hidden"),
+  $(".cart-sidebar").addClass("active");
+}
+
+
+
+</script>
+
 <template lang="">
     <div>
         <div class="header-top">
@@ -38,13 +86,17 @@
                 <div class="header-widget-group hover-nav">
                   <li class="nav-item dropdown">
                     <router-link class="nav-link header-widget" :to="{ name:'user.login' }" data-bs-toggle="dropdown"><i class="fas fa-user"></i></router-link>
-                    <ul class="dropdown-menu dropdown-menu-end">
+                    <ul class="dropdown-menu dropdown-menu-end" v-if="!user.data">
                       <li><router-link :to="{ name:'user.login' }" class="dropdown-item"> Login</router-link></li>
                       <li><router-link :to="{ name: 'user.register' }" class="dropdown-item"> Register</router-link></li>
+                    </ul>
+                    <ul class="dropdown-menu dropdown-menu-end" v-else>
                       <li><router-link :to="{ name: 'user.profile' }" class="dropdown-item">My Profile</router-link></li>
                       <li><router-link :to="{ name: 'user.order' }" class="dropdown-item">My Order</router-link></li>
-                      <li><router-link :to="{ name: 'user.wishlist' }" class="dropdown-item">My Wishlist</router-link></li>
+                      <li><router-link :to="{ name: 'user.wishlist' }" class= "dropdown-item">My Wishlist</router-link></li>
+                      <li><button  :disabled="loading" href="javascript::void(0)" class="dropdown-item" @click="userLogout">Logout <span v-show="loading" class="spinner-border spinner-border-sm mr-1"></span></button></li>
                     </ul>
+                    
                   </li>
         
                   <a href="wishlist.html" class="header-widget" title="Wishlist"><i
@@ -57,24 +109,7 @@
           </header>
     </div>
 </template>
-<script setup>
 
-function search(){
-  $(".header-form").toggleClass("active"),
-  $('.header-src').children(".fa-search").toggleClass("fa-times");
-}
-
-
-function menu(){
-  $("body").css("overflow", "hidden"),
-  $(".nav-sidebar").addClass("active")
-}
-function cartShow(){
-  $("body").css("overflow", "hidden"),
-  $(".cart-sidebar").addClass("active");
-}
-
-</script>
 <style>
 
 .hover-nav .nav-item .dropdown-menu {

@@ -26,25 +26,28 @@ const showPassword = ref(false)
 const {errors} = storeToRefs(auth)
 
 
-const onSubmit = async (values, {setErrors}) => {
+const onSubmit = async (values, { setErrors }) => {
+  try {
+    const res = await auth.login(values);
 
-  const res = await auth.login(values)
-  console.log(res);
-
-    if (res.data) {
-      router.push({ name: 'index.page' })
+    if (res && res.data) {
+      router.push({ name: 'index.page' });
       ElNotification({
         title: 'Success',
         message: 'This is a success message',
         type: 'success',
         position: 'top-left',
-      })
-    }else{
-      setErrors(res);
+      });
+    } else if (res && res.errors) {
+      setErrors(res.errors);
+    } else {
+      console.error('Unexpected response:', res);
     }
-
-}
-
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle any other errors here
+  }
+};
 
 
 const  toggleShow = () => {

@@ -1,38 +1,58 @@
 import { defineStore } from 'pinia'
-import axios from 'axios';
+import axiosInstance from "@/services/axiosService.js";
 
 export const useAuth = defineStore('auth', {
   state: () => ({ 
     user: {},
+    loading: false,
   }),
 
   persist: {
     paths: ['user'],
   },
-    actions: {
-      async login(fromData) {
-      
-        try {
-          let res = await axios.post(import.meta.env.VITE_API_URL + "/api/v1/admin/login", fromData)
+  actions: {
+    async login(formData) {
+      try {
+        const res = await axiosInstance.post("/admin/login", formData);
 
-          console.log(res);
-          
-          if (res.status == 200) {
-            this.user = res.data;
-            return new Promise((resolve)=>{
-                resolve(res.data)
-            })
-
-          }
-        } catch (error) {
-
-          if (error.response.data) {
-            return new Promise((reject)=>{
-              reject(error.response.data.errors)
-            })  
-          }          
+        if (res.status === 200) {
+          // console.log(res.data);
+          this.user = res.data;
+          return new Promise((resolve) => {
+            resolve(res.data);
+          });
         }
+      } catch (error) {
+        if (error.response.data) {
+          // this.errors = error.response.data.errors;
 
-      },
+          return new Promise((reject) => {
+            reject(error.response.data.errors);
+          });
+        }
+      }
+    },
+
+    async logout() {
+      this.loading = true;
+      try {
+        const res = await axiosInstance.post("/user/logout");
+        if (res.status === 200) {
+          this.user = {};
+          return new Promise((resolve) => {
+            resolve(res.data);
+          });
+        }
+      } catch (error) {
+        if (error.response) {
+          return new Promise((reject) => {
+            reject(error.response);
+          });
+        }
+      } finally {
+        this.loading = false;
+      }
+    },
+
     },
   })
