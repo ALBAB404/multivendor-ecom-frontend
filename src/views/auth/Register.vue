@@ -31,10 +31,8 @@ const showPassword = ref(false)
 
 
 const onSubmit = async (values, { setErrors }) => {
-  try {
     const res = await auth.register(values);
-
-    if (res.status === 200) {
+    if (res) {
       router.push({ name: 'index.page' });
       ElNotification({
         title: 'Success',
@@ -43,12 +41,8 @@ const onSubmit = async (values, { setErrors }) => {
         position: 'top-left',
       });
     }else {
-      console.error('Unexpected response:', res);
+      setErrors(res);
     }
-  } catch (error) {
-    console.error('Error:', error);
-    // Handle any other errors here
-  }
 };
 
 
