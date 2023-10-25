@@ -1,7 +1,7 @@
 
 <script setup>
 // All Import File  Code Is Here......................................................................................................
-import { ref, reactive} from 'vue';
+import { ref, reactive, onMounted} from 'vue';
 
 import {useAuth} from '@/stores/auth';
 // validation error 
@@ -19,16 +19,19 @@ const auth = useAuth();
 
 const showPassword = ref(false);
 
-const sendOtp = ref(false);
+const sendOtp = ref(true);
 const verifyFrom =  reactive({
-  phone: '',
+  phone: '01686381998',
   otp_code: '',
 });
+
+var intervalTimer;
 // API Calling Code Is Here.....................................................................................................
 const onSubmit = async (values, { setErrors }) => {
     const res = await auth.register(values);    // auth.js a register() function ase.
     if (res) {
       sendOtp.value = true
+      setTime(120);
       ElNotification({
         title: 'Success',
         message: 'OTP Send Success',
@@ -55,6 +58,20 @@ const otpVerify = async (values, { setErrors }) => {
       setErrors(res);
     }
 };
+
+// resend otp code
+
+const resendOtp = async () => {
+  const res = await auth.resendOtp(verifyFrom.phone);
+  if (res) {
+    setTime(120);
+
+    notify.Success("Otp Send Success");
+  }
+};
+// All Mounted or other codes is here  Code Is Here.....................................................................................................
+
+
 // All Function  Code Is Here.....................................................................................................
 
 //Register validation code is here.
@@ -79,6 +96,46 @@ const  toggleShow = () => {
 }
 
 
+// start Count-Down
+const timeLeft = ref("00:00");
+var intervalTimer;
+
+function setTime(seconds) {
+  clearInterval(intervalTimer);
+  timer(seconds);
+}
+
+function timer(seconds) {
+  const now = Date.now();
+  const end = now + seconds * 1000;
+  displayTimeLeft(seconds);
+  countdown(end);
+}
+function countdown(end) {
+  // this.initialTime = this.selectedTime;
+  intervalTimer = setInterval(() => {
+    const secondsLeft = Math.round((end - Date.now()) / 1000);
+    if (secondsLeft < 0) {
+      clearInterval(intervalTimer);
+      return;
+    }
+    displayTimeLeft(secondsLeft);
+  }, 1000);
+}
+
+function displayTimeLeft(secondsLeft) {
+  const minutes = Math.floor((secondsLeft % 3600) / 60);
+  const seconds = secondsLeft % 60;
+
+  timeLeft.value = `${zeroPadded(minutes)}:${zeroPadded(seconds)}`;
+}
+
+function zeroPadded(num) {
+  return num < 10 ? `0${num}` : num;
+}
+
+
+
 
 </script>
 
@@ -90,7 +147,7 @@ const  toggleShow = () => {
           <div class="col-12 col-sm-10 col-md-12 col-lg-12 col-xl-6">
             <div class="user-form-card">
               <div class="user-form-title" v-if="!sendOtp"><h2>Customer Register</h2></div>
-              <div class="user-form-title" v-else><h2>Verify Your OPT Code</h2></div>
+              <div class="user-form-title" v-else><h2>Verify Your OPT Code</h2></div>              
               <div class="user-form-group" id="axiosForm" v-if="!sendOtp">
                 <Form class="user-form" @submit="onSubmit" :validation-schema="schema" v-slot="{errors, isSubmitting}">
                   
@@ -191,6 +248,9 @@ const  toggleShow = () => {
                     />
                     <span class="text-danger">{{ errors.otp_code }}</span>
                   </div>
+
+                  <a href="javascript::void(0)" class="text-success otp_cs" v-if="timeLeft === '00:00'" @click="resendOtp" >Resend Otp</a>
+                  <a href="javascript::void(0)" class="text-success otp_cs" v-else >{{ timeLeft }}</a>
                   
                   <div class="form-button">
                     <button type="submit" :disabled="isSubmitting">Register
@@ -223,5 +283,9 @@ const  toggleShow = () => {
   <style >
   
   @import "@/assets/css/user-auth.css";
+
+  .otp_cs {
+    float: right;
+  }
 
   </style>
