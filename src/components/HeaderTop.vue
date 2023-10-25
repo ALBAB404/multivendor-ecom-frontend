@@ -1,5 +1,7 @@
 
 <script setup>
+
+// All Import File  Code Is Here......................................................................................................
 import {useAuth} from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 // router pushing 
@@ -8,16 +10,17 @@ import { useRouter } from 'vue-router'
 // notification massage
 import { ElNotification } from 'element-plus'
 
-
+// All Variable  Code Is Here.....................................................................................................
 const auth = useAuth()
 const { user, loading} = storeToRefs(auth)
 const router = useRouter()
 
+// API Calling Code Is Here.....................................................................................................
 const userLogout = async () => {
   const res = await auth.logout()
   console.log(res);
   if(res.status){
-    router.push({ name: "index.page"})
+    router.push({ name: "user.login"})
     ElNotification({
         title: 'Success',
         message: 'logout successfully',
@@ -26,6 +29,8 @@ const userLogout = async () => {
       })
   }
 }
+
+// All Function  Code Is Here.....................................................................................................
 
 function search(){
   $(".header-form").toggleClass("active"),
@@ -41,8 +46,6 @@ function cartShow(){
   $("body").css("overflow", "hidden"),
   $(".cart-sidebar").addClass("active");
 }
-
-
 
 </script>
 

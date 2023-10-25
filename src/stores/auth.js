@@ -1,7 +1,12 @@
+// All Import File  Code Is Here......................................................................................................
 import { defineStore } from 'pinia'
 import axiosInstance from "@/services/axiosService.js";
 
+
+
+
 export const useAuth = defineStore('auth', {
+  // All Variable  Code Is Here.....................................................................................................
   state: () => ({ 
     user: {},
     loading: false,
@@ -10,7 +15,11 @@ export const useAuth = defineStore('auth', {
   persist: {
     paths: ['user'],
   },
+  
+  
   actions: {
+    // API Calling Code Is Here.....................................................................................................
+    
     async login(formData) {
       try {
         const res = await axiosInstance.post("/user/login", formData);
@@ -32,12 +41,30 @@ export const useAuth = defineStore('auth', {
         }
       }
     },
-
-
+    
+    
     async register(formData) {
       try {
         const res = await axiosInstance.post("/user/register", formData);
         if (res.status === 201) {
+          return new Promise((resolve) => {
+            resolve(res.data);
+          });
+        }
+      } catch (error) {
+        if (error.response.data) {
+          return new Promise((reject) => {
+            reject(error.response.data.errors);
+          });
+        }
+      }
+    },
+
+
+    async otpVerify(formData) {
+      try {
+        const res = await axiosInstance.post("/user/otp-verify", formData);
+        if (res.status === 200) {
           this.user = res.data;
           return new Promise((resolve) => {
             resolve(res.data);
@@ -73,5 +100,6 @@ export const useAuth = defineStore('auth', {
       }
     },
 
-    },
+  },
   })
+  // All Function  Code Is Here.....................................................................................................

@@ -1,6 +1,7 @@
 
 <script setup>
 
+// All Import File  Code Is Here......................................................................................................
 import {ref} from 'vue';
 
 import {useAuth} from '@/stores/auth';
@@ -13,17 +14,12 @@ import { useRouter } from 'vue-router'
 import { ElNotification } from 'element-plus'
 
 
+// All Variable  Code Is Here.....................................................................................................
 const router = useRouter()
-
-const schema = yup.object({
-  phone: yup.string().required('Phone Feild Is Required'),
-  password: yup.string().required(),
-})
-
 const auth = useAuth()
 const showPassword = ref(false)
 
-
+// API Calling Code Is Here.....................................................................................................
 const onSubmit = async (values, { setErrors }) => {
   try {
     const res = await auth.login(values);
@@ -47,8 +43,15 @@ const onSubmit = async (values, { setErrors }) => {
   }
 };
 
+// All Function  Code Is Here.....................................................................................................
 
-const  toggleShow = () => {
+const schema = yup.object({     // validation code . eta ekta package
+  phone: yup.string().required('Phone Feild Is Required'),
+  password: yup.string().required(),
+})
+
+
+const  toggleShow = () => {       // password show on and off korar jonno ei function ready kora hoise .
   showPassword.value = !showPassword.value;
 }
 
@@ -67,7 +70,6 @@ const  toggleShow = () => {
               </div>
               <div class="user-form-group" id="axiosForm">
                 <Form class="user-form" @submit="onSubmit" :validation-schema="schema" v-slot="{errors, isSubmitting}">
-                  <!--v-if-->
                   <div class="form-group">
                     <Field 
                       name = "phone"
@@ -75,7 +77,7 @@ const  toggleShow = () => {
                       class="form-control"
                       placeholder="phone no"
                       :class ="{'is-invalid': errors.phone}"
-                    /><!--v-if-->
+                    />
                     <span class="text-danger" v-if="errors.phone">{{ errors.phone }}</span>
                   </div>
                   <div class="form-group">

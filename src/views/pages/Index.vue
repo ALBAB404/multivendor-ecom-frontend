@@ -1159,23 +1159,27 @@
 </template>
 
 <script setup>
+
+// All Import File  Code Is Here......................................................................................................
 import { ref } from 'vue';
-
-
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
-
-
 // Import Swiper styles
 import 'swiper/css';
-
-
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 // import required modules
 import { Pagination,Autoplay, Navigation } from 'swiper/modules'
 
+
+// All Variable  Code Is Here.....................................................................................................
 const newSlide = ref([Navigation])
 
 const modules = ref([Pagination,Autoplay]);
+
+
+// API Calling Code Is Here.....................................................................................................
+
+// All Function  Code Is Here.....................................................................................................
+
 </script>

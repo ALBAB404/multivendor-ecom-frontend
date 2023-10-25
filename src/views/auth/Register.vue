@@ -1,7 +1,7 @@
 
 <script setup>
-
-import { ref} from 'vue';
+// All Import File  Code Is Here......................................................................................................
+import { ref, reactive} from 'vue';
 
 import {useAuth} from '@/stores/auth';
 // validation error 
@@ -12,28 +12,39 @@ import { useRouter } from 'vue-router'
 // notification massage
 import { ElNotification } from 'element-plus'
 
+// All Variable  Code Is Here.....................................................................................................
+const router = useRouter();
 
-const router = useRouter()
+const auth = useAuth();
 
-const schema = yup.object({
-  name: yup.string().required(),
-  email: yup.string().required().email(),
-  phone: yup.string().required(),
-  password: yup.string().required().min(8),
-  password_confirmation: yup.string().required('password confirmation is a required field').min(8).oneOf(
-      [yup.ref("password"), null],
-      "password and confirm password must be match"
-    ),
-})
+const showPassword = ref(false);
 
-const auth = useAuth()
-const showPassword = ref(false)
-
-
+const sendOtp = ref(false);
+const verifyFrom =  reactive({
+  phone: '',
+  otp_code: '',
+});
+// API Calling Code Is Here.....................................................................................................
 const onSubmit = async (values, { setErrors }) => {
-    const res = await auth.register(values);
+    const res = await auth.register(values);    // auth.js a register() function ase.
+    if (res) {
+      sendOtp.value = true
+      ElNotification({
+        title: 'Success',
+        message: 'OTP Send Success',
+        type: 'success',
+        position: 'top-left',
+      });
+    }else {
+      setErrors(res);
+    }
+};
+
+const otpVerify = async (values, { setErrors }) => {
+  const res = await auth.otpVerify(verifyFrom);    // auth.js a otpVerify() function ase.
     if (res) {
       router.push({ name: 'index.page' });
+      sendOtp.value = false
       ElNotification({
         title: 'Success',
         message: 'Register Successfully Done',
@@ -44,11 +55,30 @@ const onSubmit = async (values, { setErrors }) => {
       setErrors(res);
     }
 };
+// All Function  Code Is Here.....................................................................................................
+
+//Register validation code is here.
+const schema = yup.object({
+  name: yup.string().required(),
+  email: yup.string().required().email(),
+  phone: yup.string().required(),
+  password: yup.string().required().min(8),
+  password_confirmation: yup.string().required('password confirmation is a required field').min(8).oneOf(
+    [yup.ref("password"), null],
+    "password and confirm password must be match"
+    ),
+  })
+  //Otp validation code is here.
+  const schemaOtpVerify = yup.object({
+    otp_code : yup.number().required("Please Input Your OTP Code").min(6),
+  })
 
 
 const  toggleShow = () => {
   showPassword.value = !showPassword.value;
 }
+
+
 
 </script>
 
@@ -59,11 +89,9 @@ const  toggleShow = () => {
         <div class="row justify-content-center">
           <div class="col-12 col-sm-10 col-md-12 col-lg-12 col-xl-6">
             <div class="user-form-card">
-              <div class="user-form-title">
-                <h2>Customer Register</h2>
-                <p>Use your credentials to access</p>
-              </div>
-              <div class="user-form-group" id="axiosForm">
+              <div class="user-form-title" v-if="!sendOtp"><h2>Customer Register</h2></div>
+              <div class="user-form-title" v-else><h2>Verify Your OPT Code</h2></div>
+              <div class="user-form-group" id="axiosForm" v-if="!sendOtp">
                 <Form class="user-form" @submit="onSubmit" :validation-schema="schema" v-slot="{errors, isSubmitting}">
                   
                   <div class="form-group">
@@ -72,6 +100,7 @@ const  toggleShow = () => {
                       type="text"
                       class="form-control"
                       placeholder="phone no"
+                      v-model="verifyFrom.phone"
                       :class ="{'is-invalid': errors.phone}"
                     />
                     <span class="text-danger">{{ errors.phone }}</span>
@@ -132,6 +161,35 @@ const  toggleShow = () => {
                         'fa-eye-slash' : !showPassword,
                       }"></i></span
                     >
+                  </div>
+                  
+                  <div class="form-button">
+                    <button type="submit" :disabled="isSubmitting">Register
+                      <span v-show="isSubmitting" class="spinner-border spinner-border-sm mr-1"></span>
+                    </button>
+                    <p>
+                      Forgot your password?<a
+                        href="reset-password.html"
+                        class=""
+                        >reset here</a
+                      >
+                    </p>
+                  </div>
+                </Form>
+              </div>
+              <div class="user-form-group" id="axiosForm" v-else>
+                <Form class="user-form" @submit="otpVerify" :validation-schema="schemaOtpVerify" v-slot="{errors, isSubmitting}">
+                  
+                  <div class="form-group">
+                    <Field 
+                      name = "otp_code"
+                      type="text"
+                      class="form-control"
+                      placeholder="OTP-CODE"
+                      v-model="verifyFrom.otp_code"
+                      :class ="{'is-invalid': errors.otp_code}"
+                    />
+                    <span class="text-danger">{{ errors.otp_code }}</span>
                   </div>
                   
                   <div class="form-button">
