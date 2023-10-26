@@ -1,3 +1,42 @@
+<script setup>
+
+// All Import File  Code Is Here......................................................................................................
+import { ref,onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+// import required modules
+import { Pagination,Autoplay, Navigation } from 'swiper/modules'
+
+// slider data fetch 
+import {useSlider} from '@/stores'
+
+
+// All Variable  Code Is Here.....................................................................................................
+const newSlide = ref([Navigation])
+
+const modules = ref([Pagination,Autoplay]);
+
+// slider data fetch 
+const slider = useSlider();
+const {sliders} = storeToRefs(slider)
+// API Calling Code Is Here.....................................................................................................
+
+// All Function  Code Is Here.....................................................................................................
+
+
+// All mounted Hooks  Code Is Here.....................................................................................................
+
+onMounted(() => {
+    slider.getData()
+})
+
+</script>
+
 <template lang="">
 <div>
     <section class="banner-part">
@@ -16,9 +55,7 @@
                     :loop="true"
                     :modules="modules"
                     class="mySwiper">
-                    <swiper-slide><a href="#"><img src="@/assets/images/banner/01.jfif" alt="" /></a></swiper-slide>
-                    <swiper-slide><a href="#"><img src="@/assets/images/banner/02.jfif" alt="" /></a></swiper-slide>
-                    <swiper-slide><a href="#"><img src="@/assets/images/banner/03.jfif" alt="" /></a></swiper-slide>
+                    <swiper-slide v-for="(slider, index) in sliders.data" :key="index"><a href="#"><img :src="slider.image" alt="" /></a></swiper-slide>
                 </swiper>
 
 
@@ -1158,28 +1195,3 @@
 </div>
 </template>
 
-<script setup>
-
-// All Import File  Code Is Here......................................................................................................
-import { ref } from 'vue';
-// Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from 'swiper/vue';
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-// import required modules
-import { Pagination,Autoplay, Navigation } from 'swiper/modules'
-
-
-// All Variable  Code Is Here.....................................................................................................
-const newSlide = ref([Navigation])
-
-const modules = ref([Pagination,Autoplay]);
-
-
-// API Calling Code Is Here.....................................................................................................
-
-// All Function  Code Is Here.....................................................................................................
-
-</script>

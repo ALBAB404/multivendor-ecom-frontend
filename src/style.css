@@ -14,13 +14,13 @@
 @import "nprogress/nprogress.css";
 
 #nprogress .bar {
-    background: #d10000 !important;
+    background: #ffffff !important;
     padding: 0 10px !important;
-    height: 6px !important;
+    height: 4px !important;
 }
 
  #nprogress .spinner .spinner-icon {
-    border-top-color: #ff0000 !important;
-    border-left-color: #ff0000 !important;
+    border-top-color: #ffffff !important;
+    border-left-color: #ffffff !important;
  }
 

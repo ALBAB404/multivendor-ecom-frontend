@@ -40,6 +40,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   const loggedIn = useAuth();
 
+  // authorization er jonno kora hoise. login authorization start 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!loggedIn.user.meta) {
       next({name : 'user.login'})
@@ -55,6 +56,7 @@ router.beforeEach((to, from, next) => {
   }else{
     next()
   }
+  // authorization er jonno kora hoise. login authorization end 
 })
 
 router.afterEach(()=>{
