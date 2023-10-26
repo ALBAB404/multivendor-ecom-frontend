@@ -15,8 +15,17 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
-const app =  createApp(App)
-app.use(ElementPlus)
-app.use(pinia)
+const app =  createApp(App);
+app.use(ElementPlus);
+app.use(pinia);
 app.use(router);
+
+
+app.config.globalProperties.$filters = {
+    currencySymbol(value) {
+      return "৳" + value.toLocaleString();
+    },
+}
+
+
 app.mount('#app');
