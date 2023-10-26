@@ -13,6 +13,7 @@ export const useProduct = defineStore('product', {
     popular:[],
     feature:[],
     winter:[],
+    newItems:[],
     loading: false,
   }),
   
@@ -33,6 +34,8 @@ export const useProduct = defineStore('product', {
             this.feature = res.data ;
           }else if (type === 'winter'){
             this.winter = res.data ;
+          }else if (type === 'new'){
+            this.newItems = res.data ;
           }else{
             this.products = res.data ;
           }
