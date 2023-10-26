@@ -2,18 +2,16 @@
 <script setup>
 
 // All Import File  Code Is Here......................................................................................................
-import {useAuth} from '@/stores/auth';
+import {useAuth, useNotification} from '@/stores';   
 import { storeToRefs } from 'pinia';
 // router pushing 
 import { useRouter } from 'vue-router'
-
-// notification massage
-import { ElNotification } from 'element-plus'
 
 // All Variable  Code Is Here.....................................................................................................
 const auth = useAuth()
 const { user, loading} = storeToRefs(auth)
 const router = useRouter()
+const notify = useNotification();
 
 // API Calling Code Is Here.....................................................................................................
 const userLogout = async () => {
@@ -21,12 +19,7 @@ const userLogout = async () => {
   console.log(res);
   if(res.status){
     router.push({ name: "user.login"})
-    ElNotification({
-        title: 'Success',
-        message: 'logout successfully',
-        type: 'success',
-        position: 'top-left',
-      })
+    notify.Success("Logout Successfully")
   }
 }
 

@@ -6,7 +6,6 @@ import router from './router'
 import App from './App.vue'
 // ElementPlus notification show er jonno statrt 
 import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
 // ElementPlus notification show er jonno end
 // Local a data save rakhar jonno show er jonno start
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'

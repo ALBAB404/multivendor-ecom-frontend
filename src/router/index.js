@@ -4,6 +4,8 @@ import {UserLogin, UserRegister} from '@/views/auth';
 import {SellerApply, SellerList, SellerStore} from '@/views/pages/seller';
 import {MyOrderList, MyProfile, MyWishList} from '@/views/user';
 import {useAuth} from '@/stores';
+// opore j header a progress bar jai ba loading hoy shetar jonno ei link
+import NProgress from "nprogress";
 
 const routes = [
 
@@ -35,7 +37,7 @@ const DEFAULT_TITLE = "404"
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || DEFAULT_TITLE ;
-
+  NProgress.start();
   const loggedIn = useAuth();
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
@@ -53,6 +55,10 @@ router.beforeEach((to, from, next) => {
   }else{
     next()
   }
+})
+
+router.afterEach(()=>{
+  NProgress.done();
 })
 
 export default router

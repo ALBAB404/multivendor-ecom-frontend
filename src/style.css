@@ -8,3 +8,19 @@
 @import "@/assets/css/main.css";
 @import "@/assets/css/home-category.css";
 
+/* //package css  */
+
+@import "element-plus/dist/index.css";
+@import "nprogress/nprogress.css";
+
+#nprogress .bar {
+    background: #d10000 !important;
+    padding: 0 10px !important;
+    height: 6px !important;
+}
+
+ #nprogress .spinner .spinner-icon {
+    border-top-color: #ff0000 !important;
+    border-left-color: #ff0000 !important;
+ }
+

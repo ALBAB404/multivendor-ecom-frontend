@@ -3,14 +3,12 @@
 // All Import File  Code Is Here......................................................................................................
 import { ref, reactive, onMounted} from 'vue';
 
-import {useAuth} from '@/stores/auth';
+import {useAuth, useNotification} from '@/stores';
 // validation error 
 import { Form, Field } from 'vee-validate';
 import * as yup from 'yup';
 // router pushing 
 import { useRouter } from 'vue-router'
-// notification massage
-import { ElNotification } from 'element-plus'
 
 // All Variable  Code Is Here.....................................................................................................
 const router = useRouter();
@@ -19,25 +17,28 @@ const auth = useAuth();
 
 const showPassword = ref(false);
 
-const sendOtp = ref(true);
+// otp send and resend er jonno start here
+const sendOtp = ref(false);
 const verifyFrom =  reactive({
-  phone: '01686381998',
+  phone: '',
   otp_code: '',
 });
-
+const timeLeft = ref("00:00");
 var intervalTimer;
+// otp send and resend er jonno End here
+
+//notification er jonno start
+const notify = useNotification();
+//notification er jonno end
+
+
 // API Calling Code Is Here.....................................................................................................
 const onSubmit = async (values, { setErrors }) => {
     const res = await auth.register(values);    // auth.js a register() function ase.
     if (res) {
       sendOtp.value = true
       setTime(120);
-      ElNotification({
-        title: 'Success',
-        message: 'OTP Send Success',
-        type: 'success',
-        position: 'top-left',
-      });
+      notify.Success("Registration Successfully Done")
     }else {
       setErrors(res);
     }
@@ -48,12 +49,7 @@ const otpVerify = async (values, { setErrors }) => {
     if (res) {
       router.push({ name: 'index.page' });
       sendOtp.value = false
-      ElNotification({
-        title: 'Success',
-        message: 'Register Successfully Done',
-        type: 'success',
-        position: 'top-left',
-      });
+      notify.Success("OPT Code Send Successfully")
     }else {
       setErrors(res);
     }
@@ -66,7 +62,7 @@ const resendOtp = async () => {
   if (res) {
     setTime(120);
 
-    notify.Success("Otp Send Success");
+    notify.Success("Otp Code Resend Successfully");
   }
 };
 // All Mounted or other codes is here  Code Is Here.....................................................................................................
@@ -97,8 +93,6 @@ const  toggleShow = () => {
 
 
 // start Count-Down
-const timeLeft = ref("00:00");
-var intervalTimer;
 
 function setTime(seconds) {
   clearInterval(intervalTimer);

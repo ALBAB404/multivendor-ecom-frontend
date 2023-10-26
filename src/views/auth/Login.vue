@@ -4,21 +4,19 @@
 // All Import File  Code Is Here......................................................................................................
 import {ref} from 'vue';
 
-import {useAuth} from '@/stores/auth';
+import {useAuth, useNotification} from '@/stores';
 // validation error 
 import { Form, Field } from 'vee-validate';
 import * as yup from 'yup';
 // router pushing 
 import { useRouter } from 'vue-router'
-// notification massage
-import { ElNotification } from 'element-plus'
 
 
 // All Variable  Code Is Here.....................................................................................................
 const router = useRouter()
 const auth = useAuth()
 const showPassword = ref(false)
-
+const notify = useNotification();
 // API Calling Code Is Here.....................................................................................................
 const onSubmit = async (values, { setErrors }) => {
   try {
@@ -26,12 +24,7 @@ const onSubmit = async (values, { setErrors }) => {
 
     if (res && res.data) {
       router.push({ name: 'index.page' });
-      ElNotification({
-        title: 'Success',
-        message: 'This is a success message',
-        type: 'success',
-        position: 'top-left',
-      });
+      notify.Success("Login Successfully Done")
     } else if (res && res.errors) {
       setErrors(res.errors);
     } else {
