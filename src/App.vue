@@ -2,61 +2,56 @@
 // All Import File  Code Is Here......................................................................................................
 import {
   HeaderTop,
-  Navbar, 
-  CartSideBar, 
-  MobileMenu, 
-  LoginModal, 
-  NewsLetter, 
-  FooterPart  
-} from '@/components';
-
+  Navbar,
+  CartSideBar,
+  MobileMenu,
+  LoginModal,
+  NewsLetter,
+  FooterPart,
+} from "@/components";
 
 // All Variable  Code Is Here.....................................................................................................
-
 
 // API Calling Code Is Here.....................................................................................................
 
 // All Function  Code Is Here.....................................................................................................
-
-
 </script>
 
-<template lang="">
+<template>
   <div>
     <div class="backdrop"></div>
     <a class="backtop fas fa-arrow-up" href="#"></a>
-
-    <!-- header Top -->
+    <!--
+  header Top -->
     <HeaderTop />
-  
     <!-- navbar -->
     <Navbar />
-
     <!-- cart Side Bar -->
     <CartSideBar />
-   
-     <!-- Mobile Manu -->
-     <MobileMenu />
-  
+    <!-- Mobile Manu -->
+    <MobileMenu />
     <!-- Login Modal Option -->
-
     <LoginModel />
-
-
-      <!--  change content  -->
-
-      <router-view></router-view>
-
-
+    <!-- change content -->
+    <!-- <router-view></router-view> -->
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in"> <component :is="Component" /> </transition>
+    </router-view>
     <!-- News Letter Part -->
     <NewsLetter />
-
     <!-- Footer Part -->
     <FooterPart />
-
   </div>
 </template>
 
 <style>
-  
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
