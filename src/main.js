@@ -10,6 +10,9 @@ import ElementPlus from 'element-plus'
 // Local a data save rakhar jonno show er jonno start
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 // ElementPlus notification show er jonno end
+// skeleton css  show er jonno start
+import "skeleton-screen-css";
+// skeleton css  show er jonno end
 
 
 const pinia = createPinia()

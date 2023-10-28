@@ -3,7 +3,9 @@
 // All Import File  Code Is Here......................................................................................................
 import { ref,onMounted } from 'vue';
 import { storeToRefs } from 'pinia'; 
+// all components 
 import {ProductCart, ProductPrice} from '@/components/product'
+import {HomeSliderSkeleton, CategorySkeleton, ProductSkeleton} from '@/components/skeleton'
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
 // Import Swiper styles
@@ -57,21 +59,25 @@ onMounted(() => {
             <div class="row">
             <div class="col-lg-12 order-0 order-lg-1 order-xl-1">
                 <div class="home-grid-slider slider-arrow slider-dots">
-                <swiper
-                    :spaceBetween="30"
-                    :pagination="{
-                    clickable: true,
-                    }"
-                    :autoplay="{
-                        delay: 2000,
-                    }"
-                    :loop="true"
-                    :modules="modules"
-                    class="mySwiper">
-                    <swiper-slide v-for="(slider, index) in sliders.data" :key="index"><a href="#"><img :src="slider.image" alt="" /></a></swiper-slide>
-                </swiper>
 
-
+                <template v-if="sliders.data">
+                    <swiper
+                        :spaceBetween="30"
+                        :pagination="{
+                        clickable: true,
+                        }"
+                        :autoplay="{
+                            delay: 2000,
+                        }"
+                        :loop="true"
+                        :modules="modules"
+                        class="mySwiper">
+                        <swiper-slide v-for="(slider, index) in sliders.data" :key="index"><a href="#"><img :src="slider.image" alt="" /></a></swiper-slide>
+                    </swiper>
+                </template>
+                <template v-else>
+                    <HomeSliderSkeleton />
+                </template>
                 </div>
             </div>
             </div>
@@ -89,21 +95,24 @@ onMounted(() => {
             </div>
     
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-
-                <div class="col" v-for="(category, index) in categories.data" :key="index">
-                    <div class="product-card">
-                    <ul>
-                        <li>
-                        <a class="suggest-card" href="shop-4column.html">
-                            <img :src="category.image" alt="" />
-                        </a>
-                        </li>
-                    </ul>
-        
-                    <h6 class="text-center mt-2">{{ category.name }}</h6>
+                <template v-if="categories.data">
+                    <div class="col" v-for="(category, index) in categories.data" :key="index">
+                        <div class="product-card">
+                        <ul>
+                            <li>
+                            <a class="suggest-card" href="shop-4column.html">
+                                <img :src="category.image" alt="" />
+                            </a>
+                            </li>
+                        </ul>
+            
+                        <h6 class="text-center mt-2">{{ category.name }}</h6>
+                        </div>
                     </div>
-                </div>
-
+                </template>
+                <template v-else>
+                    <CategorySkeleton :dataAmount='10' />
+                </template>             
             </div>
         </div>
         </section>
@@ -117,7 +126,12 @@ onMounted(() => {
                 </div>
             </div>
             </div>
-                <ProductCart :products="products" />
+                <template v-if="products.data">
+                    <ProductCart :products="products" />
+                </template>
+                <template v-else>
+                    <ProductSkeleton :dataAmount='10'/>    
+                </template>
             <div class="row">
             <div class="col-lg-12">
                 <div class="section-btn-25">
@@ -137,7 +151,12 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                    <ProductCart :products="popular" />
+                    <template v-if="popular.data">
+                        <ProductCart :products="popular" />
+                    </template>
+                    <template v-else>
+                        <ProductSkeleton :dataAmount='10'/>    
+                    </template>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-btn-25">
@@ -157,7 +176,12 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                    <ProductCart :products="sale" />
+                    <template v-if="sale.data">
+                        <ProductCart :products="sale" />
+                    </template>
+                    <template v-else>
+                        <ProductSkeleton :dataAmount='10'/>    
+                    </template>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-btn-25">
@@ -177,7 +201,12 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                    <ProductCart :products="feature" />
+                    <template v-if="feature.data">
+                        <ProductCart :products="feature" />
+                    </template>
+                    <template v-else>
+                        <ProductSkeleton :dataAmount='10'/>    
+                    </template>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-btn-25">
@@ -197,7 +226,12 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                    <ProductCart :products="winter" />
+                    <template v-if="winter.data">
+                        <ProductCart :products="winter" />
+                    </template>
+                    <template v-else>
+                        <ProductSkeleton :dataAmount='10'/>    
+                    </template>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-btn-25">
