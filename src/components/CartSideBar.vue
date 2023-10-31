@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia";
 
 // All Variable  Code Is Here.....................................................................................................
 const cart = useCart();
-const { cartItemCount, cartItem } = storeToRefs(cart);
+const { cartItemCount, cartItem, totalPrice } = storeToRefs(cart);
 
 // API Calling Code Is Here.....................................................................................................
 
@@ -43,7 +43,7 @@ function cartClose() {
               <h6>
                 <a href="product-single.html">{{ cart.name }}</a>
               </h6>
-              <p>Unit Price - ${{ cart.price }}</p>
+              <p>Unit Price - {{ $filters.currencySymbol(cart.price) }}</p>
             </div>
             <div class="cart-action-group">
               <div class="product-action">
@@ -60,7 +60,7 @@ function cartClose() {
                   <i class="icofont-plus"></i>
                 </button>
               </div>
-              <h6>${{ cart.price * cart.quantity }}</h6>
+              <h6>{{ $filters.currencySymbol(cart.price * cart.quantity) }}</h6>
             </div>
           </div>
         </li>
@@ -72,7 +72,9 @@ function cartClose() {
             name: 'checkout.page',
           }"
           ><span class="checkout-label">Proceed to Checkout</span
-          ><span class="checkout-price">$369.78</span></router-link
+          ><span class="checkout-price">{{
+            $filters.currencySymbol(totalPrice)
+          }}</span></router-link
         >
       </div>
     </aside>

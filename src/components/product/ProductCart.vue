@@ -1,11 +1,11 @@
 <script setup>
 import { ProductPrice } from "@/components/product";
 import { ref } from "vue";
-import { useCart } from "@/stores";
+import { useCart, useNotification } from "@/stores";
 
+const notify = useNotification();
 const cart = useCart();
 const price = ref();
-
 
 const props = defineProps({
   products: {
@@ -13,8 +13,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-
 
 function addToCart(product) {
   if (product.discount) {
@@ -26,12 +24,15 @@ function addToCart(product) {
     price.value = product.price;
   }
 
-  cart.addToCart({    // eta holo store er moddhe cart er moddhe j function ta defind kora ase oita .
+  cart.addToCart({
+    // eta holo store er moddhe cart er moddhe j function ta defind kora ase oita .
     id: product.id,
     name: product.name,
     price: price.value,
     thumbnail: product.thumbnail,
   });
+
+  notify.Success(`${product.name} Successfully Added Your Cart Items`);
 }
 </script>
 <template>

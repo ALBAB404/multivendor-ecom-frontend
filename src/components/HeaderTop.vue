@@ -11,7 +11,7 @@ const { user, loading } = storeToRefs(auth);
 const router = useRouter();
 const notify = useNotification();
 const cart = useCart();
-const { cartItemCount, cartItem } = storeToRefs(cart);
+const { cartItemCount, cartItem, totalPrice } = storeToRefs(cart);
 
 // API Calling Code Is Here.....................................................................................................
 const userLogout = async () => {
@@ -159,7 +159,11 @@ function cartShow() {
             >
               <i class="fas fa-shopping-basket"></i
               ><sup>{{ cartItemCount }}</sup
-              ><span>total price<small>$345.00</small></span>
+              ><span
+                >total price<small>{{
+                  $filters.currencySymbol(totalPrice)
+                }}</small></span
+              >
             </button>
           </div>
         </div>
