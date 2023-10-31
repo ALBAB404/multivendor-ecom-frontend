@@ -50,6 +50,12 @@ export const useCart = defineStore("cart", {
       }
     },
 
+    async destroy(index) {
+      if (this.cartItem.length > 0) {
+        this.cartItem.splice(index, 1);
+      }
+    },
+
     // API Calling Code Is Here.....................................................................................................
   },
 });

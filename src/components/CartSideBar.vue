@@ -16,6 +16,12 @@ function cartClose() {
     $(".cart-sidebar").removeClass("active"),
     $(".backdrop").fadeOut();
 }
+
+// delete cart
+
+const deleteCart = (index) => {
+  cart.destroy(index);
+};
 </script>
 
 <template lang="">
@@ -34,7 +40,7 @@ function cartClose() {
         <li class="cart-item" v-for="(cart, index) in cartItem" :key="index">
           <div class="cart-media">
             <a href="#"><img :src="cart.thumbnail" alt="product" /></a>
-            <button class="cart-delete">
+            <button class="cart-delete" @click.prevent="deleteCart(cart)">
               <i class="far fa-trash-alt"></i>
             </button>
           </div>
