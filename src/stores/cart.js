@@ -56,6 +56,14 @@ export const useCart = defineStore("cart", {
       }
     },
 
+    async decrement(index) {
+      if (this.cartItem.length > 0) {
+        if (this.cartItem[index]["quantity"] !== 1) {
+          this.cartItem[index]["quantity"] -= 1;
+        }
+      }
+    },
+
     // API Calling Code Is Here.....................................................................................................
   },
 });
