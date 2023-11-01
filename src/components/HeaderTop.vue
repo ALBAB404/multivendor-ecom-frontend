@@ -150,8 +150,13 @@ function cartShow() {
               </ul>
             </li>
 
-            <a href="wishlist.html" class="header-widget" title="Wishlist"
-              ><i class="fas fa-heart"></i><sup>0</sup></a
+            <router-link
+              v-if="auth.user.data"
+              :to="{ name: 'user.wishlist' }"
+              class="header-widget"
+              title="Wishlist"
+              ><i class="fas fa-heart"></i
+              ><sup>{{ user.meta.wishlist.length }}</sup></router-link
             ><button
               class="header-widget header-cart"
               @click="cartShow"

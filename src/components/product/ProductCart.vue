@@ -1,10 +1,11 @@
 <script setup>
 import { ProductPrice } from "@/components/product";
 import { ref } from "vue";
-import { useCart, useNotification, useAuth } from "@/stores";
+import { useCart, useNotification, useAuth, useWishlist } from "@/stores";
 
 const notify = useNotification();
 const cart = useCart();
+const wishlist = useWishlist();
 const auth = useAuth();
 const price = ref();
 
@@ -36,9 +37,18 @@ function addToCart(product) {
   notify.Success(`${product.name} Successfully Added Your Cart Items`);
 }
 
-const addToWishlist = () => {
+const addToWishlist = async (product) => {
   if (auth.user.data) {
-    alert("login ase");
+    let res = wishlist.addToWishlist(product);
+    res.then((response) => {
+      if (response.status === 200) {
+        notify.Success(`${product.name} Removed Your Wishlist Items`);
+      } else {
+        notify.Success(
+          `${product.name} Successfully Added Your Wishlist Items`
+        );
+      }
+    });
   } else {
     $("#login-modal").modal("show");
   }

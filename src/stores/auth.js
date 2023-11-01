@@ -22,6 +22,7 @@ export const useAuth = defineStore("auth", {
 
         if (res.status === 200) {
           this.user = res.data;
+          console.log(res);
           return new Promise((resolve) => {
             resolve(res.data);
           });
