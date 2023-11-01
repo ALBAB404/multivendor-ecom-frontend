@@ -2,9 +2,11 @@
 import { ProductPrice } from "@/components/product";
 import { ref } from "vue";
 import { useCart, useNotification, useAuth, useWishlist } from "@/stores";
+import { storeToRefs } from "pinia";
 
 const notify = useNotification();
 const cart = useCart();
+const { loading } = storeToRefs(cart);
 const wishlist = useWishlist();
 const auth = useAuth();
 const price = ref();
@@ -43,10 +45,12 @@ const addToWishlist = async (product) => {
     res.then((response) => {
       if (response.status === 200) {
         notify.Success(`${product.name} Removed Your Wishlist Items`);
+        wishlist.loading = false;
       } else {
         notify.Success(
           `${product.name} Successfully Added Your Wishlist Items`
         );
+        wishlist.loading = false;
       }
     });
   } else {
@@ -69,7 +73,11 @@ const addToWishlist = async (product) => {
             class="product-wish wish"
             @click.prevent="addToWishlist(product)"
           >
-            <i class="fas fa-heart"></i></button
+            <i
+              class="fas fa-spinner fa-spin"
+              v-if="wishlist.loading === product.id"
+            ></i>
+            <i class="fas fa-heart" v-else></i></button
           ><router-link class="product-image" :to="{ name: 'product.details' }"
             ><img :src="product.images" alt="product"
           /></router-link>
@@ -88,7 +96,8 @@ const addToWishlist = async (product) => {
             title="Add to Cart"
             @click.prevent="addToCart(product)"
           >
-            <i class="fas fa-shopping-basket"></i><span>Add</span>
+            <i class="fas fa-spinner fa-spin" v-if="loading === product.id"></i>
+            <i class="fas fa-shopping-basket" v-else></i><span>Add</span>
           </button>
         </div>
       </div>

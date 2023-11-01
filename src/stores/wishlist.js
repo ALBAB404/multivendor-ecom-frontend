@@ -13,7 +13,24 @@ export const useWishlist = defineStore("wishlist", {
   actions: {
     // API Calling Code Is Here.....................................................................................................
 
+    async index(product) {
+      try {
+        const res = await axiosInstance.get("user/wishlists");
+
+        if (res.status === 200) {
+          const auth = useAuth();
+          auth.user.meta.wishlist = res.data.data;
+        }
+      } catch (error) {
+        if (error.response.data) {
+          return new Promise((reject) => {
+            reject(error.response.data);
+          });
+        }
+      }
+    },
     async addToWishlist(product) {
+      this.loading = product.id;
       try {
         const res = await axiosInstance.post("user/wishlists", {
           product_id: product.id,

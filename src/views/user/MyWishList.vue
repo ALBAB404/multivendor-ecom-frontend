@@ -1,16 +1,55 @@
 <script setup>
 // All Import File  Code Is Here......................................................................................................
-import { useAuth, useNotification } from "@/stores";
+import { useAuth, useNotification, useWishlist, useCart } from "@/stores";
 import { ProductPrice } from "@/components/product";
 import { storeToRefs } from "pinia";
+import { onMounted, ref } from "vue";
 
 // All Variable  Code Is Here.....................................................................................................
 const auth = useAuth();
+const wishlist = useWishlist();
+const notify = useNotification();
 const { user } = storeToRefs(auth);
+const cart = useCart();
+const price = ref();
 
 // API Calling Code Is Here.....................................................................................................
 
 // All Function  Code Is Here.....................................................................................................
+
+const destroyWishlist = async (product) => {
+  let res = await wishlist.addToWishlist(product);
+  if (res.status === 200) {
+    notify.Success(`${product.name} Delete From Your Wishlist`);
+  }
+};
+
+onMounted(() => {
+  wishlist.index();
+});
+
+// add to cart
+
+function addToCart(product) {
+  if (product.discount) {
+    var firstPrice = product.price;
+    var discount = product.discount / 100;
+    var totalPrice = firstPrice - firstPrice * discount;
+    price.value = totalPrice.toFixed();
+  } else {
+    price.value = product.price;
+  }
+
+  cart.addToCart({
+    // eta holo store er moddhe cart er moddhe j function ta defind kora ase oita .
+    id: product.id,
+    name: product.name,
+    price: price.value,
+    thumbnail: product.thumbnail,
+  });
+
+  notify.Success(`${product.name} Successfully Added Your Cart Items`);
+}
 </script>
 
 <template>
@@ -63,7 +102,11 @@ const { user } = storeToRefs(auth);
                       />
                     </td>
                     <td class="table-shop">
-                      <button class="product-add" title="Add to Cart">
+                      <button
+                        class="product-add"
+                        title="Add to Cart"
+                        @click.prevent="addToCart(product)"
+                      >
                         add to cart</button
                       ><!-- fas fa-spinner fa-spin -->
                     </td>
@@ -72,8 +115,14 @@ const { user } = storeToRefs(auth);
                         class=""
                         href="javascript::void(0)"
                         title="Remove Wishlist"
-                        ><i class="icofont-trash"></i
-                      ></a>
+                        @click.prevent="destroyWishlist(product)"
+                      >
+                        <i
+                          class="fas fa-spinner fa-spin cs-red"
+                          v-if="wishlist.loading === product.id"
+                        ></i>
+                        <i class="icofont-trash cs-red" v-else></i>
+                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -93,4 +142,8 @@ const { user } = storeToRefs(auth);
   </div>
 </template>
 
-<style></style>
+<style>
+.cs-red {
+  color: #ff3838;
+}
+</style>

@@ -35,6 +35,7 @@ export const useCart = defineStore("cart", {
   // All Function  Code Is Here.....................................................................................................
   actions: {
     addToCart(product) {
+      this.loading = product.id;
       let item = product;
       item = { ...item, quantity: 1 };
       if (this.cartItem.length > 0) {
@@ -49,6 +50,10 @@ export const useCart = defineStore("cart", {
       } else {
         this.cartItem.push(item);
       }
+
+      setTimeout(() => {
+        this.loading = false;
+      }, 1000);
     },
 
     async destroy(index) {
