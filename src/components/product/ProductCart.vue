@@ -1,10 +1,11 @@
 <script setup>
 import { ProductPrice } from "@/components/product";
 import { ref } from "vue";
-import { useCart, useNotification } from "@/stores";
+import { useCart, useNotification, useAuth } from "@/stores";
 
 const notify = useNotification();
 const cart = useCart();
+const auth = useAuth();
 const price = ref();
 
 const props = defineProps({
@@ -34,6 +35,14 @@ function addToCart(product) {
 
   notify.Success(`${product.name} Successfully Added Your Cart Items`);
 }
+
+const addToWishlist = () => {
+  if (auth.user.data) {
+    alert("login ase");
+  } else {
+    $("#login-modal").modal("show");
+  }
+};
 </script>
 <template>
   <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
@@ -46,7 +55,10 @@ function addToCart(product) {
               product.discount
             }}</label>
           </div>
-          <button class="product-wish wish">
+          <button
+            class="product-wish wish"
+            @click.prevent="addToWishlist(product)"
+          >
             <i class="fas fa-heart"></i></button
           ><router-link class="product-image" :to="{ name: 'product.details' }"
             ><img :src="product.images" alt="product"

@@ -1,31 +1,26 @@
 // All Import File  Code Is Here......................................................................................................
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 import axiosInstance from "@/services/axiosService.js";
 
-
-
-
-export const useAuth = defineStore('auth', {
+export const useAuth = defineStore("auth", {
   // All Variable  Code Is Here.....................................................................................................
-  state: () => ({ 
+  state: () => ({
     user: {},
     loading: false,
   }),
 
   persist: {
-    paths: ['user'],
+    paths: ["user"],
   },
-  
-  
+
   actions: {
     // API Calling Code Is Here.....................................................................................................
-    
+
     async login(formData) {
       try {
         const res = await axiosInstance.post("/user/login", formData);
 
         if (res.status === 200) {
-          // console.log(res.data);
           this.user = res.data;
           return new Promise((resolve) => {
             resolve(res.data);
@@ -41,8 +36,7 @@ export const useAuth = defineStore('auth', {
         }
       }
     },
-    
-    
+
     async register(formData) {
       try {
         const res = await axiosInstance.post("/user/register", formData);
@@ -59,7 +53,6 @@ export const useAuth = defineStore('auth', {
         }
       }
     },
-
 
     async otpVerify(formData) {
       try {
@@ -78,7 +71,6 @@ export const useAuth = defineStore('auth', {
         }
       }
     },
-
 
     async resendOtp(phone) {
       try {
@@ -120,7 +112,6 @@ export const useAuth = defineStore('auth', {
         this.loading = false;
       }
     },
-
   },
-  })
-  // All Function  Code Is Here.....................................................................................................
+});
+// All Function  Code Is Here.....................................................................................................

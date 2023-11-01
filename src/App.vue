@@ -31,11 +31,13 @@ import {
     <!-- Mobile Manu -->
     <MobileMenu />
     <!-- Login Modal Option -->
-    <LoginModel />
+    <LoginModal />
     <!-- change content -->
     <!-- <router-view></router-view> -->
     <router-view v-slot="{ Component }">
-      <transition name="fade" mode="out-in"> <component :is="Component" /> </transition>
+      <transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
     </router-view>
     <!-- News Letter Part -->
     <NewsLetter />
