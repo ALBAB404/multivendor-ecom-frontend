@@ -36,7 +36,7 @@ function addToCart(product) {
     thumbnail: product.thumbnail,
   });
 
-  notify.Success(`${product.name} Successfully Added Your Cart Items`);
+  notify.Success(`${product.name} Successfully Added Your Cart Item`);
 }
 
 const addToWishlist = async (product) => {
