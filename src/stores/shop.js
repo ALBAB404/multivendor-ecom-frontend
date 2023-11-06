@@ -9,6 +9,7 @@ export const useShop = defineStore('shop', {
   // All Variable  Code Is Here.....................................................................................................
   state: () => ({ 
     products: [],
+    sideBar: [],
   }),
   
   actions: {
@@ -31,15 +32,12 @@ export const useShop = defineStore('shop', {
     },
 
 
-    async sideBar() {
+    async sideBarData() {
       try {
         const res = await axiosInstance.get("/shop-sideBar");
-
-        console.log(res);
-
-        // if (res.status === 200) {
-        //     this.products = res.data;
-        // }
+        if (res.status === 200) {
+            this.sideBar = res.data;
+        }
       } catch (error) {
         if (error.response.data) {
           return new Promise((reject) => {

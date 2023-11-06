@@ -1,29 +1,45 @@
 <script setup>
 // All Import File  Code Is Here......................................................................................................
 import { useShop } from "@/stores";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { Bootstrap5Pagination } from "laravel-vue-pagination";
 // all components 
-import {ProductCart, ProductPrice} from '@/components/product'
-import { ProductSkeleton} from '@/components/skeleton'
+import {ProductCart, ProductPrice, ProductSidebarFiltering} from '@/components/product'
+import { ProductSkeleton, ShopSideBarSkeleton} from '@/components/skeleton'
 
 // All Variable  Code Is Here.....................................................................................................
 const shop = useShop();
-const {products} = storeToRefs(shop)
+const {products, sideBar} = storeToRefs(shop)
 const show = ref(10);
 const sort = ref('default');
+const searchBrandQuery = ref('');
+const searchCategoryQuery = ref('');
+
+
 // API Calling Code Is Here.....................................................................................................
 
 // All Function  Code Is Here.....................................................................................................
 const getProducts = (page = 1) => {
-  shop.$reset();
+  products.value = [];
   shop.getData(page, show.value, sort.value);
 }
 
+const searchedBrands = computed(() => {
+    return shop.sideBar.data.brands.filter((brand)=>{
+      return brand.name.toLowerCase().match(searchBrandQuery.value.toLowerCase());
+    })
+})
+
+const searchedCategories = computed(() => {
+    return shop.sideBar.data.categories.filter((category)=>{
+      return category.name.toLowerCase().match(searchCategoryQuery.value.toLowerCase());
+    })
+})
+
 onMounted(() => {
   getProducts();
-  shop.sideBar();
+  shop.sideBarData();
 });
 
 </script>
@@ -42,215 +58,81 @@ onMounted(() => {
         <div class="container">
           <div class="row content-reverse">
             <div class="col-lg-3">
-              <!-- <div class="shop-widget-promo">
-              <a href="#"><img src="@/assets/images/promo/shop/01.jpg" alt="promo" /></a>
-            </div> -->
-              <div class="shop-widget">
-                <h6 class="shop-widget-title">Filter by Price</h6>
-                <form>
-                  <div class="shop-widget-group">
-                    <input type="text" placeholder="Min - 00" /><input
+            <template v-if="sideBar.data">
+                <div class="shop-widget">
+                  <h6 class="shop-widget-title">Filter by Price</h6>
+                  <form>
+                    <div class="shop-widget-group">
+                      <input type="text" :placeholder="`Min - ${$filters.currencySymbol(sideBar.data.price.min_price)}`" /><input
+                        type="text"
+                        :placeholder="`Max - ${$filters.currencySymbol(sideBar.data.price.max_price)}`" 
+                      />
+                    </div>
+                    <button class="shop-widget-btn">
+                      <i class="fas fa-search"></i><span>search</span>
+                    </button>
+                  </form>
+                </div>
+                <div class="shop-widget">
+                  <h6 class="shop-widget-title">Filter by Brand</h6>
+                  <form>
+                    <input
+                      class="shop-widget-search"
                       type="text"
-                      placeholder="Max - 5k"
+                      placeholder="Search..."
+                      v-model="searchBrandQuery"
                     />
-                  </div>
-                  <button class="shop-widget-btn">
-                    <i class="fas fa-search"></i><span>search</span>
-                  </button>
-                </form>
-              </div>
-  
-              <div class="shop-widget">
-                <h6 class="shop-widget-title">Filter by Brand</h6>
-                <form>
-                  <input
-                    class="shop-widget-search"
-                    type="text"
-                    placeholder="Search..."
-                  />
-                  <ul class="shop-widget-list shop-widget-scroll">
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="brand1" /><label for="brand1"
-                          >mari gold</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(13)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="brand2" /><label for="brand2"
-                          >tredar</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(28)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="brand3" /><label for="brand3"
-                          >keya</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(35)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="brand4" /><label for="brand4"
-                          >diamond</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(47)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="brand5" /><label for="brand5"
-                          >lilly's</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(59)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="brand6" /><label for="brand6"
-                          >fremant</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(64)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="brand7" /><label for="brand7"
-                          >avocads</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(77)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="brand8" /><label for="brand8"
-                          >boroclas</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(85)</span>
-                    </li>
-                  </ul>
-                  <button class="shop-widget-btn">
-                    <i class="far fa-trash-alt"></i><span>clear filter</span>
-                  </button>
-                </form>
-              </div>
-              <div class="shop-widget">
-                <h6 class="shop-widget-title">Filter by Category</h6>
-                <form>
-                  <input
-                    class="shop-widget-search"
-                    type="text"
-                    placeholder="Search..."
-                  />
-                  <ul class="shop-widget-list shop-widget-scroll">
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate1" /><label for="cate1"
-                          >vegetables</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(13)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate2" /><label for="cate2"
-                          >groceries</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(28)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate3" /><label for="cate3"
-                          >fruits</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(35)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate4" /><label for="cate4"
-                          >dairy farm</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(47)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate5" /><label for="cate5"
-                          >sea foods</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(59)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate6" /><label for="cate6"
-                          >diet foods</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(64)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate7" /><label for="cate7"
-                          >dry foods</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(77)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate8" /><label for="cate8"
-                          >fast foods</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(85)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate9" /><label for="cate9"
-                          >drinks</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(92)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate10" /><label for="cate10"
-                          >coffee</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(21)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate11" /><label for="cate11"
-                          >meats</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(14)</span>
-                    </li>
-                    <li>
-                      <div class="shop-widget-content">
-                        <input type="checkbox" id="cate12" /><label for="cate12"
-                          >fishes</label
-                        >
-                      </div>
-                      <span class="shop-widget-number">(56)</span>
-                    </li>
-                  </ul>
-                  <button class="shop-widget-btn">
-                    <i class="far fa-trash-alt"></i><span>clear filter</span>
-                  </button>
-                </form>
-              </div>
+                    <ul class="shop-widget-list shop-widget-scroll" v-if="sideBar.data">
+                      <li v-for="(brand, index) in searchedBrands " :key="index">
+                          <div class="shop-widget-content">
+                              <input type="checkbox" id="brand1" /><label for="brand1"
+                              >{{ brand.name }}</label
+                              >
+                          </div>
+                          <span class="shop-widget-number">({{ brand.products_count }})</span>
+                      </li>
+                      <li v-show="searchedBrands.length == 0">
+                          <p class="text-danger">No Search Result Found</p>
+                      </li>
+                    </ul>
+                    <button class="shop-widget-btn">
+                      <i class="far fa-trash-alt"></i><span>clear filter</span>
+                    </button>
+                  </form>
+                </div>
+                <div class="shop-widget">
+                  <h6 class="shop-widget-title">Filter by Category</h6>
+                  <form>
+                    <input
+                      class="shop-widget-search"
+                      type="text"
+                      placeholder="Search..."
+                      v-model="searchCategoryQuery"                    
+                    />
+                    <ul class="shop-widget-list shop-widget-scroll" v-if="sideBar.data">
+                      <li v-for="(category, index) in searchedCategories " :key="index">
+                          <div class="shop-widget-content">
+                              <input type="checkbox" id="brand1" /><label for="brand1"
+                              >{{ category.name }}</label
+                              >
+                          </div>
+                          <span class="shop-widget-number">({{ category.products_count }})</span>
+                      </li>
+                      <li v-show="searchedCategories.length == 0">
+                          <p class="text-danger">No Search Result Found</p>
+                      </li>
+                    </ul>
+                    <button class="shop-widget-btn">
+                      <i class="far fa-trash-alt"></i><span>clear filter</span>
+                    </button>
+                  </form>
+                </div>
+              </template>
+              <template v-else>
+                <ShopSideBarSkeleton />
+              </template>
             </div>
+
             <div class="col-lg-9">
               <div class="row">
                 <div class="col-lg-12">
