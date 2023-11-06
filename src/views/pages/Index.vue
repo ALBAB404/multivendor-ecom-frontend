@@ -126,8 +126,10 @@ onMounted(() => {
                 </div>
             </div>
             </div>
-                <template v-if="products.data">
-                    <ProductCart :products="products" />
+                <template v-if="products.data">                
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                        <ProductCart :product="product" v-for="(product, index) in products.data" :key="index" />
+                    </div>
                 </template>
                 <template v-else>
                     <ProductSkeleton :dataAmount='10'/>    
@@ -135,7 +137,7 @@ onMounted(() => {
             <div class="row">
             <div class="col-lg-12">
                 <div class="section-btn-25">
-                <a href="shop-4column.html" class="btn btn-outline"><i class="fas fa-eye"></i><span>show more</span></a>
+                  <a href="shop-4column.html" class="btn btn-outline"><i class="fas fa-eye"></i><span>show more</span></a>
                 </div>
             </div>
             </div>
@@ -151,8 +153,10 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                    <template v-if="popular.data">
-                        <ProductCart :products="popular" />
+                    <template v-if="popular.data">                
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                            <ProductCart :product="product" v-for="(product, index) in popular.data" :key="index" />
+                        </div>
                     </template>
                     <template v-else>
                         <ProductSkeleton :dataAmount='10'/>    
@@ -176,8 +180,10 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                    <template v-if="sale.data">
-                        <ProductCart :products="sale" />
+                    <template v-if="sale.data">                
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                            <ProductCart :product="product" v-for="(product, index) in sale.data" :key="index" />
+                        </div>
                     </template>
                     <template v-else>
                         <ProductSkeleton :dataAmount='10'/>    
@@ -201,8 +207,10 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                    <template v-if="feature.data">
-                        <ProductCart :products="feature" />
+                    <template v-if="feature.data">                
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                            <ProductCart :product="product" v-for="(product, index) in feature.data" :key="index" />
+                        </div>
                     </template>
                     <template v-else>
                         <ProductSkeleton :dataAmount='10'/>    
@@ -226,8 +234,10 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                    <template v-if="winter.data">
-                        <ProductCart :products="winter" />
+                    <template v-if="winter.data">                
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                            <ProductCart :product="product" v-for="(product, index) in winter.data" :key="index" />
+                        </div>
                     </template>
                     <template v-else>
                         <ProductSkeleton :dataAmount='10'/>    

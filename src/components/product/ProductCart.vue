@@ -12,7 +12,7 @@ const auth = useAuth();
 const price = ref();
 
 const props = defineProps({
-  products: {
+  product: {
     type: Object,
     required: true,
   },
@@ -59,8 +59,7 @@ const addToWishlist = async (product) => {
 };
 </script>
 <template>
-  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-    <div class="col" v-for="(product, index) in products.data" :key="index">
+    <div class="col">
       <div class="product-card">
         <div class="product-media">
           <div class="product-label">
@@ -102,5 +101,4 @@ const addToWishlist = async (product) => {
         </div>
       </div>
     </div>
-  </div>
 </template>

@@ -6,7 +6,7 @@ export const useSeller = defineStore("seller", {
   // All Variable  Code Is Here.....................................................................................................
   state: () => ({
     sellers: [],
-    loading: false,
+    products: {}, 
   }),
 
   actions: {
@@ -17,13 +17,9 @@ export const useSeller = defineStore("seller", {
         const res = await axiosInstance.get(
           `/sellers?page=${page}&show=${show}`
         );
-        console.log(res);
 
         if (res.status === 200) {
           this.sellers = res.data;
-          return new Promise((resolve) => {
-            resolve(res.data);
-          });
         }
       } catch (error) {
         if (error.response.data) {
@@ -37,14 +33,10 @@ export const useSeller = defineStore("seller", {
     async sellerProductBySlug(slug) {
       try {
         const res = await axiosInstance.get(`/sellers/products/${slug}`);
-        console.log(res.data);
 
-        // if (res.status === 200) {
-        //   this.sellers = res.data;
-        //   return new Promise((resolve) => {
-        //     resolve(res.data);
-        //   });
-        // }
+        if (res.status === 200) {
+          this.products = res.data;
+        }
       } catch (error) {
         if (error.response.data) {
           return new Promise((reject) => {
