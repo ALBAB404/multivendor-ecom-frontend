@@ -23,6 +23,7 @@ const getProducts = (page = 1) => {
 
 onMounted(() => {
   getProducts();
+  shop.sideBar();
 });
 
 </script>

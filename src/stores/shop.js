@@ -29,6 +29,25 @@ export const useShop = defineStore('shop', {
         }
       }
     },
+
+
+    async sideBar() {
+      try {
+        const res = await axiosInstance.get("/shop-sideBar");
+
+        console.log(res);
+
+        // if (res.status === 200) {
+        //     this.products = res.data;
+        // }
+      } catch (error) {
+        if (error.response.data) {
+          return new Promise((reject) => {
+            reject(error.response.data);
+          });
+        }
+      }
+    },
     
     
    
