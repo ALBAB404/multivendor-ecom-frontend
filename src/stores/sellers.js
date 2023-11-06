@@ -30,9 +30,9 @@ export const useSeller = defineStore("seller", {
       }
     },
 
-    async sellerProductBySlug(slug) {
+    async sellerProductBySlug(slug, page, show, sort) {
       try {
-        const res = await axiosInstance.get(`/sellers/products/${slug}`);
+        const res = await axiosInstance.get(`/sellers/products/${slug}?page=${page}&show=${show}&sort=${sort}`);
 
         if (res.status === 200) {
           this.products = res.data;

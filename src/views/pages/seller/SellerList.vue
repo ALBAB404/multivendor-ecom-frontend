@@ -113,6 +113,7 @@ const getSellers = async (page = 1) => {
             </div>
           </div>
         </div>
+        
       </div>
     </section>
   </div>
