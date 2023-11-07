@@ -1,26 +1,33 @@
 // All Import File  Code Is Here......................................................................................................
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 import axiosInstance from "@/services/axiosService.js";
 
-
-
-
-export const useShop = defineStore('shop', {
+export const useShop = defineStore("shop", {
   // All Variable  Code Is Here.....................................................................................................
-  state: () => ({ 
+  state: () => ({
     products: [],
     sideBar: [],
   }),
-  
+
   actions: {
     // API Calling Code Is Here.....................................................................................................
-    
-    async getData(page, show, sort) {
+
+    async getData(page, show, sort, brand, category, price_range, search) {
       try {
-        const res = await axiosInstance.get(`/products-shop?page=${page}&show=${show}&sort=${sort}`);
+        const res = await axiosInstance.get(`/products-shop`, {
+          params: {
+            page,
+            show,
+            sort,
+            brand: brand,
+            category: category,
+            price_range: price_range,
+            search: search.length >= 3 ? search : "",
+          },
+        });
 
         if (res.status === 200) {
-            this.products = res.data;
+          this.products = res.data;
         }
       } catch (error) {
         if (error.response.data) {
@@ -30,13 +37,12 @@ export const useShop = defineStore('shop', {
         }
       }
     },
-
 
     async sideBarData() {
       try {
         const res = await axiosInstance.get("/shop-sideBar");
         if (res.status === 200) {
-            this.sideBar = res.data;
+          this.sideBar = res.data;
         }
       } catch (error) {
         if (error.response.data) {
@@ -46,10 +52,6 @@ export const useShop = defineStore('shop', {
         }
       }
     },
-    
-    
-   
-
   },
-  })
-  // All Function  Code Is Here.....................................................................................................
+});
+// All Function  Code Is Here.....................................................................................................
