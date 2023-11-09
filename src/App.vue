@@ -1,5 +1,9 @@
 <script setup>
 // All Import File  Code Is Here......................................................................................................
+import { onMounted } from "vue";
+import { useCategory } from "@/stores";
+import { storeToRefs } from "pinia";
+
 import {
   HeaderTop,
   Navbar,
@@ -11,9 +15,13 @@ import {
 } from "@/components";
 
 // All Variable  Code Is Here.....................................................................................................
+const navCategoryData = useCategory();
+const { navCategory } = storeToRefs(navCategoryData);
 
 // API Calling Code Is Here.....................................................................................................
-
+onMounted(() => {
+  navCategoryData.navCategories();
+});
 // All Function  Code Is Here.....................................................................................................
 </script>
 
@@ -25,7 +33,7 @@ import {
   header Top -->
     <HeaderTop />
     <!-- navbar -->
-    <Navbar />
+    <Navbar :navCategory="navCategory" />
     <!-- cart Side Bar -->
     <CartSideBar />
     <!-- Mobile Manu -->

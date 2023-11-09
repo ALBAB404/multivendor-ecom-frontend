@@ -12,17 +12,27 @@ export const useShop = defineStore("shop", {
   actions: {
     // API Calling Code Is Here.....................................................................................................
 
-    async getData(page, show, sort, brand, category, price_range, search) {
+    async getData(
+      page,
+      show,
+      condition,
+      brand,
+      category,
+      price_range,
+      search,
+      sort
+    ) {
       try {
         const res = await axiosInstance.get(`/products-shop`, {
           params: {
             page,
             show,
-            sort,
+            condition,
             brand: brand,
             category: category,
             price_range: price_range,
             search: search.length >= 3 ? search : "",
+            sort: sort,
           },
         });
 
