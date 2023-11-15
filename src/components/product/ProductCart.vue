@@ -9,7 +9,6 @@ const cart = useCart();
 const { loading } = storeToRefs(cart);
 const wishlist = useWishlist();
 const auth = useAuth();
-const price = ref();
 
 const props = defineProps({
   product: {
@@ -19,23 +18,7 @@ const props = defineProps({
 });
 
 function addToCart(product) {
-  if (product.discount) {
-    var firstPrice = product.price;
-    var discount = product.discount / 100;
-    var totalPrice = firstPrice - firstPrice * discount;
-    price.value = totalPrice.toFixed();
-  } else {
-    price.value = product.price;
-  }
-
-  cart.addToCart({
-    // eta holo store er moddhe cart er moddhe j function ta defind kora ase oita .
-    id: product.id,
-    name: product.name,
-    price: price.value,
-    thumbnail: product.thumbnail,
-  });
-
+  cart.addToCart(product)
   notify.Success(`${product.name} Successfully Added Your Cart Item`);
 }
 

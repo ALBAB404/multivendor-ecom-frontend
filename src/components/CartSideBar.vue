@@ -64,7 +64,7 @@ const cartIncrement = (product) => {
           >
             <div class="cart-media">
               <a href="#">
-                <img :src="cart.thumbnail" alt="product" />
+                <img :src="$filters.makeImagePath(cart.thumbnail)" alt="product" />
               </a>
               <button class="cart-delete" @click.prevent="deleteCart(index)">
                 <i class="far fa-trash-alt"></i>

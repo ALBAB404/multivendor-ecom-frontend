@@ -2,7 +2,7 @@
 <script setup>
 // All Import File  Code Is Here......................................................................................................
 import { onMounted, ref } from 'vue';
-import { useProduct } from '@/stores'
+import { useProduct, useCart, useNotification, useAuth, useWishlist  } from '@/stores'
 import { storeToRefs } from 'pinia'; 
 import { useRoute } from "vue-router"; 
 import { ProductPrice } from "@/components/product";
@@ -18,6 +18,13 @@ const thumbnailImage = ref(null)
 const activeImage = ref(null)
 
 
+const notify = useNotification();
+const cart = useCart();
+const { loading } = storeToRefs(cart);
+const wishlist = useWishlist();
+const auth = useAuth();
+
+
 console.log(singleProduct);
 
 // API Calling Code Is Here.....................................................................................................
@@ -27,6 +34,31 @@ onMounted(() => {
 })
 
 // All Function  Code Is Here.....................................................................................................
+
+
+function addToCart(product) {
+  cart.addToCart(product)
+  notify.Success(`${product.name} Successfully Added Your Cart Item`);
+}
+
+const addToWishlist = async (product) => {
+  if (auth.user.data) {
+    let res = wishlist.addToWishlist(product);
+    res.then((response) => {
+      if (response.status === 200) {
+        notify.Success(`${product.name} Removed Your Wishlist Items`);
+        wishlist.loading = false;
+      } else {
+        notify.Success(
+          `${product.name} Successfully Added Your Wishlist Items`
+        );
+        wishlist.loading = false;
+      }
+    });
+  } else {
+    $("#login-modal").modal("show");
+  }
+};
 
 const changeImage = (img, index) => {
     thumbnailImage.value = img
@@ -108,7 +140,7 @@ const productBySlug = () => {
                     </ul>
                   </div>
                   <div class="details-add-group">
-                    <button class="product-add" title="Add to Cart">
+                    <button class="product-add" title="Add to Cart" @click.prevent="addToCart(singleProduct)">
                       <i class="fas fa-shopping-basket"></i
                       ><span>add to cart</span>
                     </button>
@@ -133,6 +165,7 @@ const productBySlug = () => {
                       title="Compare This Item"
                       ><i class="fas fa-random"></i><span>Buy Now</span></a
                     ><a
+                      @click.prevent="addToWishlist(singleProduct)"
                       class="details-wish wish"
                       href="#"
                       title="Add Your Wishlist"

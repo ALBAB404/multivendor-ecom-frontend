@@ -1,6 +1,6 @@
 // All Import File  Code Is Here......................................................................................................
 import { defineStore } from "pinia";
-
+import {  ref } from 'vue';
 export const useCart = defineStore("cart", {
   // All Variable  Code Is Here.....................................................................................................
   state: () => ({
@@ -35,8 +35,28 @@ export const useCart = defineStore("cart", {
   // All Function  Code Is Here.....................................................................................................
   actions: {
     addToCart(product) {
+        const price = ref();
+
+
+        if (product.discount) {
+        var firstPrice = product.price;
+        var discount = product.discount / 100;
+        var totalPrice = firstPrice - firstPrice * discount;
+        price.value = totalPrice.toFixed();
+          } else {
+            price.value = product.price;
+          }
+
+
       this.loading = product.id;
-      let item = product;
+
+      let item = {
+        id: product.id,
+        name: product.name,
+        price: price.value,
+        thumbnail: product.thumbnail,
+      };
+      
       item = { ...item, quantity: 1 };
       if (this.cartItem.length > 0) {
         let boolean = this.cartItem.some((i) => i.id === item.id);

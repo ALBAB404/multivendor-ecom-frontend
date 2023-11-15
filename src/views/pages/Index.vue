@@ -101,9 +101,15 @@ onMounted(() => {
                         <div class="product-card">
                         <ul>
                             <li>
-                            <a class="suggest-card" href="shop-4column.html">
+                            <RouterLink
+                                    :to="{
+                                        name: 'shop.page',
+                                        query: { products: category.slug },
+                                    }"
+                                    class="suggest-card"
+                                    >
                                 <img :src="category.image" alt="" />
-                            </a>
+                            </RouterLink>
                             </li>
                         </ul>
             

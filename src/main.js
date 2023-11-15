@@ -26,7 +26,8 @@ app.use(router);
 
 app.config.globalProperties.$filters = {
     currencySymbol(value) {
-      return "৳" + value.toLocaleString();
+      // return "৳" + value.toLocaleString();
+      return value ? "৳" + value.toLocaleString() : "৳";
     },
     makeImagePath(img) {
       return import.meta.env.VITE_API_URL + "/" + img;
