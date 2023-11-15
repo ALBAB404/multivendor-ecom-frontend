@@ -2,7 +2,7 @@
 // All Import File  Code Is Here......................................................................................................
 import { ref } from "vue";
 
-import { useAuth, useNotification } from "@/stores";
+import { useAuth, useNotification, useModal } from "@/stores";
 // validation error
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
@@ -15,6 +15,8 @@ const route = useRoute();
 const auth = useAuth();
 const showPassword = ref(false);
 const notify = useNotification();
+//MOdal from 
+const modal = useModal();
 // API Calling Code Is Here.....................................................................................................
 const onSubmit = async (values, { setErrors, resetForm }) => {
   try {
@@ -22,7 +24,7 @@ const onSubmit = async (values, { setErrors, resetForm }) => {
 
     if (res && res.data) {
       resetForm();
-      $("#login-modal").modal("hide");
+      modal.toggleModal()
       router.push({ name: route.path === "/auth/login" ? "index.page" : "" });
       notify.Success("Login Successfully Done");
     } else if (res && res.errors) {

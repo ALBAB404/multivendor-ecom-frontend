@@ -1,7 +1,7 @@
 <script setup>
 import { ProductPrice } from "@/components/product";
 import { ref } from "vue";
-import { useCart, useNotification, useAuth, useWishlist } from "@/stores";
+import { useCart, useNotification, useAuth, useWishlist, useModal } from "@/stores";
 import { storeToRefs } from "pinia";
 
 const notify = useNotification();
@@ -9,6 +9,8 @@ const cart = useCart();
 const { loading } = storeToRefs(cart);
 const wishlist = useWishlist();
 const auth = useAuth();
+//MOdal from 
+const modal = useModal();
 
 const props = defineProps({
   product: {
@@ -37,7 +39,7 @@ const addToWishlist = async (product) => {
       }
     });
   } else {
-    $("#login-modal").modal("show");
+    modal.toggleModal()
   }
 };
 </script>

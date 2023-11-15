@@ -6,3 +6,4 @@ export { default as LoginModal } from "./LoginModal.vue";
 export { default as LoginFrom } from "./LoginFrom.vue";
 export { default as NewsLetter } from "./NewsLetter.vue";
 export { default as FooterPart } from "./FooterPart.vue";
+export { default as Modal } from "./Modal.vue";

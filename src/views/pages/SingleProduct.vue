@@ -2,7 +2,7 @@
 <script setup>
 // All Import File  Code Is Here......................................................................................................
 import { onMounted, ref } from 'vue';
-import { useProduct, useCart, useNotification, useAuth, useWishlist  } from '@/stores'
+import { useProduct, useCart, useNotification, useAuth, useWishlist, useModal  } from '@/stores'
 import { storeToRefs } from 'pinia'; 
 import { useRoute } from "vue-router"; 
 import { ProductPrice } from "@/components/product";
@@ -17,6 +17,8 @@ const route = useRoute();
 const thumbnailImage = ref(null)
 const activeImage = ref(null)
 
+//MOdal from 
+const modal = useModal();
 
 const notify = useNotification();
 const cart = useCart();
@@ -56,7 +58,7 @@ const addToWishlist = async (product) => {
       }
     });
   } else {
-    $("#login-modal").modal("show");
+    modal.toggleModal()
   }
 };
 
