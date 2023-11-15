@@ -16,7 +16,7 @@ const routes = [
     component: Shop,
   },
   {
-    path: "/product",
+    path: "/single-product/:slug",
     name: "product.details",
     meta: { title: "Product" },
     component: SingleProduct,

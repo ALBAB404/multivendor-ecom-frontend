@@ -4,7 +4,7 @@
   // All Variable  Code Is Here.....................................................................................................
   const props = defineProps({
     navCategory: {
-      type: Array,
+      type: Object,
       required: true,
     },
   })

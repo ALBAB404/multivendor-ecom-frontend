@@ -1,50 +1,49 @@
 
 <script setup>
-import { ref } from 'vue';
-
 // All Import File  Code Is Here......................................................................................................
+import { onMounted, ref } from 'vue';
+import { useProduct } from '@/stores'
+import { storeToRefs } from 'pinia'; 
+import { useRoute } from "vue-router"; 
+import { ProductPrice } from "@/components/product";
+
 
 
 // All Variable  Code Is Here.....................................................................................................
-const thumbnailImage = ref("https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_4.jpg")
+const product = useProduct()
+const { singleProduct } = storeToRefs(product)
+const route = useRoute();
 
-const activeImage = ref(0)
-const images = ref([
-  {
-    id: 1,
-    imgUrl: "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_4.jpg"
-  },
-  {
-    id: 2,
-    imgUrl: "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_2.jpg"
-  },
-  {
-    id: 3,
-    imgUrl: "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_3.jpg"
-  },
-  {
-    id: 4,
-    imgUrl: "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_1.jpg"
-  }
-])
+const thumbnailImage = ref(null)
+const activeImage = ref(null)
+
+
+console.log(singleProduct);
+
+// API Calling Code Is Here.....................................................................................................
+
+onMounted(() => {
+  productBySlug();
+})
+
+// All Function  Code Is Here.....................................................................................................
 
 const changeImage = (img, index) => {
     thumbnailImage.value = img
     activeImage.value = index
 }
-
-
-// API Calling Code Is Here.....................................................................................................
-
-// All Function  Code Is Here.....................................................................................................
+const productBySlug = () => {
+  var slug = route.params.slug;
+  product.productBySlug(slug);
+}
 </script>
 
 <template>
     <div>
         <section
-          class="single-banner inner-section">
+          class="single-banner inner-section" v-if="singleProduct">
           <div class="container">
-            <h2>girls-cloth</h2>
+            <h2>{{ singleProduct.slug }}</h2>
             <ol class="breadcrumb"></ol>
           </div>
         </section>
@@ -54,19 +53,20 @@ const changeImage = (img, index) => {
               <div class="col-lg-6">
                 <div class="details-gallery">
                   <div class="details-label-group">
-                    <label class="details-label new">new</label
-                    ><label class="details-label off">-10%</label>
+                    <label class="details-label new">{{ singleProduct.conditions }}</label
+                    ><label class="details-label off">-{{ singleProduct.discount }}%</label>
                   </div>
                    <!-- card left -->
                     <div class = "product-imgs">
                       <div class = "img-display">
                         <div class = "img-showcase">
-                          <img :src="thumbnailImage" alt = "shoe image">
+                          <img :src="$filters.makeImagePath(singleProduct.thumbnail)" alt = "shoe image" v-if="thumbnailImage == null">
+                          <img :src="$filters.makeImagePath(thumbnailImage)" alt = "shoe image" v-else>
                         </div>
                       </div>
                       <div class = "img-select">
-                        <div class = "img-item" v-for="(image, index) in images" :key="index" :class="[activeImage == index ? 'active-thumb' : '']">
-                            <img :src="image.imgUrl" alt = "shoe image" @click.prevent="changeImage(image.imgUrl, index)">
+                        <div class = "img-item" v-for="(img, index) in singleProduct.images" :key="index" :class="[activeImage == index ? 'active-thumb' : '']">
+                            <img :src="$filters.makeImagePath(img)" alt = "shoe image" @click.prevent="changeImage(img, index)">
                         </div>
                       </div>
                     </div>
@@ -74,18 +74,16 @@ const changeImage = (img, index) => {
               </div>
               <div class="col-lg-6">
                 <div class="details-content">
-                  <h3 class="details-name"><a href="#">Girls Cloth</a></h3>
+                  <h3 class="details-name"><a href="#">{{ singleProduct.name }}</a></h3>
                   <div class="details-meta"><!--v-if--><!--v-if--></div>
                   <div>
                     <!-- //jodi modal ba single product page theke data ase.. tahole h3 design  -->
                     <h3 class="view-price">
-                      <del>৳2,050</del><span>৳1374</span>
+                      <ProductPrice :price="singleProduct.price" :discount="singleProduct.discount" />
                     </h3>
                   </div>
                   <p class="details-desc">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit facere
-                    harum natus amet soluta fuga consectetur alias veritatis
-                    quisquam ab eligendi itaque eos maiores quibusdam.
+                    {{ $filters.textShort(singleProduct.descp, 200) }}
                   </p>
   
                   <div class="details-list-group">
@@ -177,10 +175,7 @@ const changeImage = (img, index) => {
                 <div class="col-lg-12">
                   <div class="product-details-frame">
                     <div class="tab-descrip">
-                      Omnis eum unde itaque doloribus officia sunt. Sunt
-                      repellendus velit qui aperiam earum deleniti sed. Omnis esse
-                      reprehenderit esse velit dolorem. Optio in impedit numquam
-                      sed placeat dolorem.
+                    {{ singleProduct.descp }}
                     </div>
                   </div>
                 </div>

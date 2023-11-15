@@ -2,7 +2,8 @@
 
 // All Import File  Code Is Here......................................................................................................
 import { ref,onMounted } from 'vue';
-import { storeToRefs } from 'pinia'; 
+import { storeToRefs } from 'pinia';
+import { useRoute } from "vue-router"; 
 // all components 
 import {ProductCart, ProductPrice} from '@/components/product'
 import {HomeSliderSkeleton, CategorySkeleton, ProductSkeleton} from '@/components/skeleton'
@@ -22,7 +23,7 @@ import {useSlider, useCategory, useProduct} from '@/stores'
 // All Variable  Code Is Here.....................................................................................................
 const newSlide = ref([Navigation])
 const modules = ref([Pagination,Autoplay]);
-
+const route = useRoute();
 // slider data fetch 
 const slider = useSlider();
 const {sliders} = storeToRefs(slider)
@@ -72,7 +73,7 @@ onMounted(() => {
                         :loop="true"
                         :modules="modules"
                         class="mySwiper">
-                        <swiper-slide v-for="(slider, index) in sliders.data" :key="index"><a href="#"><img :src="slider.image" alt="" /></a></swiper-slide>
+                        <swiper-slide v-for="(slider, index) in sliders.data" :key="index"><a href="#"><img :src="$filters.makeImagePath(slider.image)" alt="" /></a></swiper-slide>
                     </swiper>
                 </template>
                 <template v-else>
@@ -288,12 +289,12 @@ onMounted(() => {
                                             <label class="label-text new" v-if="product.discount">{{ product.discount }}</label>
                                         </div>
                                         <button class="product-wish wish">
-                                        <i class="fas fa-heart"></i></button><router-link class="product-image" :to="{name: 'product.details'}">
-                                            <img :src="product.images" alt="product" /></router-link>
+                                        <i class="fas fa-heart"></i></button><router-link class="product-image" :to="{name: 'product.details', params: {slug: product.slug}}">
+                                            <img :src="$filters.makeImagePath(product.thumbnail)" alt="product" /></router-link>
                                     </div>
                                     <div class="product-content">
                                         <h6 class="product-name">
-                                             <router-link :to="{name: 'product.details'}">{{ product.name }}</router-link>
+                                             <router-link :to="{name: 'product.details', params: {slug: product.slug}}">{{ product.name }}</router-link>
                                         </h6>
                                         
                                           <ProductPrice  :price="product.price" :discount="product.discount"/>

@@ -77,13 +77,13 @@ const addToWishlist = async (product) => {
               v-if="wishlist.loading === product.id"
             ></i>
             <i class="fas fa-heart" v-else></i></button
-          ><router-link class="product-image" :to="{ name: 'product.details' }"
-            ><img :src="product.images" alt="product"
+          ><router-link class="product-image" :to="{ name: 'product.details', params: {slug: product.slug} }"
+            ><img :src="$filters.makeImagePath(product.thumbnail)" alt="product"
           /></router-link>
         </div>
         <div class="product-content">
           <h6 class="product-name">
-            <router-link :to="{ name: 'product.details' }">{{
+            <router-link :to="{ name: 'product.details', params: {slug: product.slug} }">{{
               product.name
             }}</router-link>
           </h6>
