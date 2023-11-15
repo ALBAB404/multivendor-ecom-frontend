@@ -1,20 +1,20 @@
 <script setup>
-// All Import File  Code Is Here......................................................................................................
+  // All Import File  Code Is Here......................................................................................................
 
-// All Variable  Code Is Here.....................................................................................................
-const props = defineProps({
-  navCategory: {
-    type: Array,
-    required: true,
-  },
-});
+  // All Variable  Code Is Here.....................................................................................................
+  const props = defineProps({
+    navCategory: {
+      type: Array,
+      required: true,
+    },
+  })
 
-// API Calling Code Is Here.....................................................................................................
+  // API Calling Code Is Here.....................................................................................................
 
-// All Function  Code Is Here.....................................................................................................
+  // All Function  Code Is Here.....................................................................................................
 </script>
 
-<template lang="">
+<template>
   <div>
     <nav class="navbar-part">
       <div class="container">
@@ -23,9 +23,7 @@ const props = defineProps({
             <div class="navbar-content">
               <ul class="navbar-list">
                 <li class="navbar-item dropdown">
-                  <router-link class="navbar-link" :to="{ name: 'index.page' }"
-                    >home</router-link
-                  >
+                  <router-link class="navbar-link" :to="{ name: 'index.page' }">home</router-link>
                 </li>
 
                 <li class="navbar-item dropdown-megamenu">
@@ -33,11 +31,7 @@ const props = defineProps({
                   <div class="megamenu">
                     <div class="container">
                       <div class="row row-cols-5">
-                        <div
-                          class="col"
-                          v-for="(categories, index) in navCategory.data"
-                          :key="index"
-                        >
+                        <div class="col" v-for="(categories, index) in navCategory.data" :key="index">
                           <div class="megamenu-wrap">
                             <router-link
                               :to="{
@@ -50,19 +44,15 @@ const props = defineProps({
                               </h5>
                             </router-link>
                             <ul class="megamenu-list">
-                              <li
-                                v-for="(
-                                  sub_category, index
-                                ) in categories.sub_category"
-                                :key="index"
-                              >
+                              <li v-for="(sub_category, index) in categories.sub_category" :key="index">
                                 <router-link
                                   :to="{
                                     name: 'shop.page',
                                     query: { products: sub_category.slug },
                                   }"
-                                  >{{ sub_category.name }}</router-link
                                 >
+                                  {{ sub_category.name }}
+                                </router-link>
                               </li>
                             </ul>
                           </div>
@@ -73,15 +63,11 @@ const props = defineProps({
                 </li>
 
                 <li class="navbar-item dropdown-megamenu">
-                  <router-link class="navbar-link" :to="{ name: 'shop.page' }"
-                    >shop</router-link
-                  >
+                  <router-link class="navbar-link" :to="{ name: 'shop.page' }">shop</router-link>
                 </li>
 
                 <li class="navbar-item dropdown-megamenu">
-                  <router-link class="navbar-link" :to="{ name: 'seller.page' }"
-                    >Seller List</router-link
-                  >
+                  <router-link class="navbar-link" :to="{ name: 'seller.page' }">Seller List</router-link>
                 </li>
               </ul>
             </div>

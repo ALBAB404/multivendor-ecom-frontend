@@ -1,0 +1,10 @@
+{
+  "semi": false,
+  "singleQuote": true,
+  "arrowParens": "always",
+  "printWidth": 120,
+  "htmlWhitespaceSensitivity": "ignore",
+  "vueIndentScriptAndStyle": true,
+  "jsxBracketSameLine": true,
+  "prettier.debug": true
+}

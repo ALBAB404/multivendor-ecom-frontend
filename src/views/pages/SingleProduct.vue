@@ -1,9 +1,37 @@
 
 <script setup>
+import { ref } from 'vue';
+
 // All Import File  Code Is Here......................................................................................................
 
 
 // All Variable  Code Is Here.....................................................................................................
+const thumbnailImage = ref("https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_4.jpg")
+
+const activeImage = ref(0)
+const images = ref([
+  {
+    id: 1,
+    imgUrl: "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_4.jpg"
+  },
+  {
+    id: 2,
+    imgUrl: "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_2.jpg"
+  },
+  {
+    id: 3,
+    imgUrl: "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_3.jpg"
+  },
+  {
+    id: 4,
+    imgUrl: "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_1.jpg"
+  }
+])
+
+const changeImage = (img, index) => {
+    thumbnailImage.value = img
+    activeImage.value = index
+}
 
 
 // API Calling Code Is Here.....................................................................................................
@@ -29,20 +57,19 @@
                     <label class="details-label new">new</label
                     ><label class="details-label off">-10%</label>
                   </div>
-                  <ul class="details-preview">
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                  </ul>
-                  <ul class="details-thumb">
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                    <li><img src="images/product/01.jpg" alt="product" /></li>
-                  </ul>
+                   <!-- card left -->
+                    <div class = "product-imgs">
+                      <div class = "img-display">
+                        <div class = "img-showcase">
+                          <img :src="thumbnailImage" alt = "shoe image">
+                        </div>
+                      </div>
+                      <div class = "img-select">
+                        <div class = "img-item" v-for="(image, index) in images" :key="index" :class="[activeImage == index ? 'active-thumb' : '']">
+                            <img :src="image.imgUrl" alt = "shoe image" @click.prevent="changeImage(image.imgUrl, index)">
+                        </div>
+                      </div>
+                    </div>
                 </div>
               </div>
               <div class="col-lg-6">
@@ -387,6 +414,39 @@
       </div>
 </template>
 
-<style>
+<style scoped> 
     @import "@/assets/css/product-details.css";
+    img{
+    width: 100%;
+    display: block;
+}
+.img-display{
+    overflow: hidden;
+}
+.img-showcase{
+    display: flex;
+    width: 100%;
+    transition: all 0.5s ease;
+}
+.img-showcase img{
+    min-width: 100%;
+}
+.img-select{
+    display: flex;
+}
+.img-item{
+    margin: 0.3rem;
+}
+.img-item:nth-child(1),
+.img-item:nth-child(2),
+.img-item:nth-child(3){
+    margin-right: 0;
+}
+.img-item:hover{
+    opacity: 0.8;
+}
+
+.active-thumb{
+  border: 2px solid #119744;
+}
 </style>
