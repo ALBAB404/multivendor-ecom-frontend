@@ -6,6 +6,7 @@ export const useCart = defineStore("cart", {
   state: () => ({
     cartItem: [],
     loading: false,
+    isOpen: false,
   }),
 
   persist: {
@@ -34,6 +35,10 @@ export const useCart = defineStore("cart", {
 
   // All Function  Code Is Here.....................................................................................................
   actions: {
+       toggleCartSideBar() {
+          this.isOpen = !this.isOpen;
+    },
+    
     addToCart(product) {
         const price = ref();
 

@@ -33,9 +33,9 @@ function search() {
 function menu() {
   $("body").css("overflow", "hidden"), $(".nav-sidebar").addClass("active");
 }
-function cartShow() {
-  $("body").css("overflow", "hidden"), $(".cart-sidebar").addClass("active");
-}
+// function cartShow() {
+//   cart.toggleCartSideBar();
+// }
 </script>
 
 <template lang="">
@@ -159,7 +159,7 @@ function cartShow() {
               ><sup>{{ user.meta.wishlist.length }}</sup></router-link
             ><button
               class="header-widget header-cart"
-              @click="cartShow"
+              @click="cart.toggleCartSideBar();"
               title="Cartlist"
             >
               <i class="fas fa-shopping-basket"></i

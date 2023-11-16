@@ -32,7 +32,9 @@ const category = useCategory();
 const {categories} = storeToRefs(category)
 // product data fetch 
 const product = useProduct();
-const {products, sale, popular, feature, winter, newItems} = storeToRefs(product)
+const { products, sale, popular, feature, winter, newItems } = storeToRefs(product)
+
+
 // API Calling Code Is Here.....................................................................................................
 
 // All Function  Code Is Here.....................................................................................................

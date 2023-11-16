@@ -11,11 +11,9 @@ const { cartItemCount, cartItem, totalPrice } = storeToRefs(cart);
 
 // All Function  Code Is Here.....................................................................................................
 
-function cartClose() {
-  $("body").css("overflow", "inherit"),
-    $(".cart-sidebar").removeClass("active"),
-    $(".backdrop").fadeOut();
-}
+// function cartClose() {
+//  cart.toggleCartSideBar();
+// }
 
 // delete cart
 
@@ -34,9 +32,9 @@ const cartIncrement = (product) => {
 };
 </script>
 
-<template lang="">
-  <div>
-    <aside class="cart-sidebar">
+<template >
+  <div v-show="cart.isOpen">
+    <aside class="cart-sidebar active">
       <div class="cart-header">
         <div class="cart-total" v-if="cartItemCount !== 0">
           <i class="fas fa-shopping-basket"></i
@@ -46,7 +44,7 @@ const cartIncrement = (product) => {
         <div v-else class="cart-total">
           <span>Your Cart is Empty..</span>
         </div>
-        <button class="cart-close" @click="cartClose">
+        <button class="cart-close" @click="cart.toggleCartSideBar();">
           <i class="icofont-close"></i>
         </button>
       </div>

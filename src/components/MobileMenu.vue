@@ -149,7 +149,7 @@
             <button class="cate-btn" @click="cateBtn" title="Category List">
               <i class="fas fa-list"></i><span>category</span>
             </button>
-            <button class="cart-btn" @click="cartBtn" title="Cartlist">
+            <button class="cart-btn" @click="cart.toggleCartSideBar()" title="Cartlist">
               <i class="fas fa-shopping-basket"></i><span>Cart</span><sup>2</sup>
             </button>
             <a href="/my-wishist" class="" title="Wishlist"><i
@@ -160,10 +160,12 @@
 </template>
 <script setup>
 // All Import File  Code Is Here......................................................................................................
-
+import { useCart } from "@/stores";
+import { storeToRefs } from "pinia";
 
 // All Variable  Code Is Here.....................................................................................................
-
+const cart = useCart();
+const { cartItemCount, cartItem, totalPrice } = storeToRefs(cart);
 
 // API Calling Code Is Here.....................................................................................................
 
@@ -173,10 +175,10 @@ function menuClose(){
           $(".nav-sidebar").removeClass("active"),
           $(".backdrop").fadeOut();
     }
-function cartBtn(){
-  $("body").css("overflow", "hidden"),
-  $(".cart-sidebar").addClass("active")
-}
+// function cartBtn(){
+//   $("body").css("overflow", "hidden"),
+//   $(".cart-sidebar").addClass("active")
+// }
 
 function cateBtn(){
   $("body").css("overflow", "hidden"),
