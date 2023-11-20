@@ -9,7 +9,7 @@ const selectDivision = ref("")
 
 
 const getDistrict = () => {
-    console.log(selectDivision.value)
+    address.districtById(selectDivision.value);
   }
 
   onMounted(() => {
@@ -25,11 +25,20 @@ const getDistrict = () => {
           <h3>add new address</h3>
         </div>
         <div class="form-group">
-          <label class="form-label">Select Area</label>
+          <label class="form-label">Select Division</label>
           <select class="form-select" @change="getDistrict" v-model="selectDivision">
             <option disable selected value="">choose division</option>
             <option v-for="(division, index) in address?.divisions" :key="index" :value="division.id">
               {{ division.name }} - {{ division.bn_name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Select District</label>
+          <select class="form-select">
+            <option disable selected value="">choose District</option>
+            <option v-for="(district, index) in address?.districts" :key="index" :value="district.id">
+              {{ district.name }} - {{ district.bn_name }}
             </option>
           </select>
         </div>

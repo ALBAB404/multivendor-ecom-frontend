@@ -31,13 +31,17 @@ export const useAddress = defineStore("address", {
       }
     },
 
-    async navCategories() {
+
+    async districtById(id) {
       try {
-        const res = await axiosInstance.get("/nav-categories");
+        const res = await axiosInstance.get(`/district/${id}`);
 
         if (res.status === 200) {
-          this.navaddress = res.data;
-          console.log(navaddress);
+          this.districts = res.data.data;
+          console.log(districts);
+          return new Promise((resolve) => {
+            resolve(res.data);
+          });
         }
       } catch (error) {
         if (error.response.data) {
@@ -47,6 +51,8 @@ export const useAddress = defineStore("address", {
         }
       }
     },
+
+  
   },
 });
 // All Function  Code Is Here.....................................................................................................
