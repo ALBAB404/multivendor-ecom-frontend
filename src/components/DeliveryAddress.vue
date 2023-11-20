@@ -10,17 +10,20 @@ const selectDivision = ref("")
 
 const getDistrict = () => {
     address.districtById(selectDivision.value);
-  }
+}
+
+
 
   onMounted(() => {
     address.getDivisions()
+    address.getUserAddress()
   })
 </script>
 
 <template>
   <div>
     <Modal>
-      <form class="modal-form">
+      <form class="modal-form" @submit.prevent="onSubmit">
         <div class="form-title">
           <h3>add new address</h3>
         </div>
@@ -68,10 +71,10 @@ const getDistrict = () => {
               <div class="profile-card address active">
                 <!-- <h6>Home</h6> -->
                 <p>
-                  <span>Dhaka</span>
+                  <span>{{ address?.address?.division.name }}</span>
                   ,
-                  <span>Gazipur</span>
-                  , Gazipur ChowRasta.
+                  <span>{{ address?.address?.district.name }}</span>
+                  , {{ address?.address?.address }}  
                 </p>
               </div>
             </div>
