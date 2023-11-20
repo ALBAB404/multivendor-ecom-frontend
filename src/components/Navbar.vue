@@ -1,16 +1,18 @@
 <script setup>
   // All Import File  Code Is Here......................................................................................................
-
+  import { onMounted } from 'vue'
+  import { useCategory } from '@/stores'
+  import { storeToRefs } from 'pinia'
   // All Variable  Code Is Here.....................................................................................................
-  const props = defineProps({
-    navCategory: {
-      type: Object,
-      required: true,
-    },
-  })
+   const navCategoryData = useCategory()
+  const { navCategory } = storeToRefs(navCategoryData)
+
 
   // API Calling Code Is Here.....................................................................................................
 
+  onMounted(() => {
+    navCategoryData.navCategories()
+  })
   // All Function  Code Is Here.....................................................................................................
 </script>
 
@@ -31,7 +33,7 @@
                   <div class="megamenu">
                     <div class="container">
                       <div class="row row-cols-5">
-                        <div class="col" v-for="(categories, index) in navCategory.data" :key="index">
+                        <div class="col" v-for="(categories, index) in navCategory?.data" :key="index">
                           <div class="megamenu-wrap">
                             <router-link
                               :to="{

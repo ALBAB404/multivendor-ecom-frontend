@@ -24,7 +24,7 @@ const onSubmit = async (values, { setErrors, resetForm }) => {
 
     if (res && res.data) {
       resetForm();
-      modal.toggleModal()
+      modal.closeModal()
       router.push({ name: route.path === "/auth/login" ? "index.page" : "" });
       notify.Success("Login Successfully Done");
     } else if (res && res.errors) {
